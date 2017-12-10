@@ -34,7 +34,7 @@ class Editor {
 
     this.render();
 
-    setInterval(this.serialize.bind(this), 1000/10);
+    setInterval(this.serialize.bind(this), 1000/20);
   }
 
   render() {
@@ -48,7 +48,7 @@ class Editor {
         $new_shelf.append(pixel.getElement());
       });
 
-      $editor.append($new_shelf);
+      $editor.prepend($new_shelf);
     });
 
     this.$element.append($editor);
@@ -63,8 +63,7 @@ class Editor {
       });
     });
 
-    return packet;
-    //this.client.publish("testtest", packet);
+    this.client.publish("ff", packet);
   }
 }
 

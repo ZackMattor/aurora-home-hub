@@ -12,9 +12,9 @@ class Pixel {
   }
 
   onSelect() {
-    this.r = 255;
-    this.g = 127;
-    this.b = 80;
+    this.r = 0;
+    this.g = 255;
+    this.b = 0;
 
     this.render();
 
