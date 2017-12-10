@@ -1,17 +1,15 @@
 import Pixel from './pixel.js';
 import mqtt from 'mqtt';
 
-function concatTypedArrays(a, b) { // a, b TypedArray of same type
-    var c = new (a.constructor)(a.length + b.length);
-    c.set(a, 0);
-    c.set(b, a.length);
-    return c;
+function concatTypedArrays(a, b) {
+  var c = new (a.constructor)(a.length + b.length);
+  c.set(a, 0);
+  c.set(b, a.length);
+  return c;
 }
 
 class Editor {
   constructor(element_id) {
-    console.log('wat');
-
     this.$element = $(element_id);
     this.shelf_count = 5;
     this.row_count = 20;
@@ -26,7 +24,7 @@ class Editor {
       }
     }
 
-
+    // Setup MQTT
     this.client = mqtt.connect("ws://mqtt.zackmattor.com:1884");
     this.client.subscribe("mqtt/demo");
 
@@ -34,11 +32,9 @@ class Editor {
       console.log([topic, payload].join(": "));
     });
 
-
     this.render();
 
     setInterval(this.serialize.bind(this), 1000/10);
-    //this.serialize();
   }
 
   render() {
@@ -59,8 +55,6 @@ class Editor {
   }
 
   serialize() {
-    console.log('tick');
-
     let packet = new Uint8Array();
 
     this.pixels.forEach((shelf) => {
@@ -69,8 +63,8 @@ class Editor {
       });
     });
 
-    //console.log(packet);
-    this.client.publish("testtest", packet);
+    return packet;
+    //this.client.publish("testtest", packet);
   }
 }
 
