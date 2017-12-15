@@ -8,6 +8,9 @@ function concatTypedArrays(a, b) {
   return c;
 }
 
+var connection = new WebSocket('ws://127.0.0.1:1337');
+connection.binaryType = "arraybuffer";
+
 class Editor {
   constructor(element_id) {
     this.$element = $(element_id);
@@ -25,16 +28,15 @@ class Editor {
     }
 
     // Setup MQTT
-    this.client = mqtt.connect("ws://mqtt.zackmattor.com:1884");
-    this.client.subscribe("mqtt/demo");
+    //this.client = mqtt.connect("ws://mqtt.zackmattor.com:1884");
 
-    this.client.on("message", function (topic, payload) {
-      console.log([topic, payload].join(": "));
-    });
+    //this.client.on("message", function (topic, payload) {
+    //  console.log([topic, payload].join(": "));
+    //});
 
     this.render();
 
-    setInterval(this.serialize.bind(this), 1000/20);
+    setInterval(this.serialize.bind(this), 10);
   }
 
   render() {
@@ -63,7 +65,8 @@ class Editor {
       });
     });
 
-    this.client.publish("ff", packet);
+    connection.send(packet);
+    //this.client.publish("client_ff", packet);
   }
 }
 

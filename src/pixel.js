@@ -12,9 +12,9 @@ class Pixel {
   }
 
   onSelect() {
-    this.r = 0;
-    this.g = 255;
-    this.b = 0;
+    this.r = 200;
+    this.g = 50;
+    this.b = 150;
 
     this.render();
 
@@ -35,7 +35,7 @@ class Pixel {
       if(this[color] <= 0) {
         this[color] = 0;
       } else {
-        this[color] -= 2;
+        this[color] -= 1;
       }
     }
 
@@ -49,7 +49,6 @@ class Pixel {
 
     this.render();
   }
-
 
   colorString() {
     let message;
