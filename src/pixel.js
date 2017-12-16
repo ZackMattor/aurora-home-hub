@@ -7,6 +7,7 @@ class Pixel {
     this.$element = $('<div>').addClass('pixel');
 
     this.$element.mouseover(this.onSelect.bind(this));
+
     this.animation_interval = null;
     this.render();
   }

@@ -24,19 +24,34 @@ class Editor {
 
       for(let pixel_id = 0; pixel_id < this.row_count; pixel_id++) {
         this.pixels[shelf_id][pixel_id] = new Pixel();
+        this.pixels[shelf_id][pixel_id].getElement().bind("touchmove", (evt) => {
+          var touch = evt.originalEvent.touches[0];
+          this.highlightHoveredObject(touch.clientX, touch.clientY);
+        });
       }
     }
-
-    // Setup MQTT
-    //this.client = mqtt.connect("ws://mqtt.zackmattor.com:1884");
-
-    //this.client.on("message", function (topic, payload) {
-    //  console.log([topic, payload].join(": "));
-    //});
 
     this.render();
 
     setInterval(this.serialize.bind(this), 10);
+  }
+
+  highlightHoveredObject(x, y) {
+    for(let shelf_id = 0; shelf_id < this.shelf_count; shelf_id++) {
+      for(let pixel_id = 0; pixel_id < this.row_count; pixel_id++) {
+        let pixel = this.pixels[shelf_id][pixel_id];
+
+        if(!pixel) continue;
+        let $pixel = pixel.getElement();
+
+        if (!(
+          x <= $pixel.offset().left || x >= $pixel.offset().left + $pixel.outerWidth() ||
+          y <= $pixel.offset().top  || y >= $pixel.offset().top + $pixel.outerHeight()
+        )) {
+          pixel.onSelect.call(pixel);
+        }
+      }
+    }
   }
 
   render() {
