@@ -6,16 +6,14 @@ class Pixel {
 
     this.$element = $('<div>').addClass('pixel');
 
-    this.$element.mouseover(this.onSelect.bind(this));
-
     this.animation_interval = null;
     this.render();
   }
 
-  onSelect() {
-    this.r = 200;
-    this.g = 50;
-    this.b = 150;
+  onSelect(color) {
+    this.r = color.r;
+    this.g = color.g;
+    this.b = color.b;
 
     this.render();
 

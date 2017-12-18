@@ -1,4 +1,5 @@
 import Pixel from './pixel.js';
+import ColorPicker from './color_picker.js';
 import mqtt from 'mqtt';
 
 function concatTypedArrays(a, b) {
@@ -18,6 +19,15 @@ class Editor {
     this.row_count = 20;
 
     this.pixels = [];
+    this.color_picker = new ColorPicker();
+
+    this.color_options = [];
+    this.color_options.push([200, 0, 0]);
+    this.color_options.push([200, 200, 0]);
+    this.color_options.push([0, 200, 0]);
+    this.color_options.push([0, 200, 200]);
+    this.color_options.push([0, 0, 200]);
+    this.color_options.push([200, 0, 200]);
 
     for(let shelf_id = 0; shelf_id < this.shelf_count; shelf_id++) {
       this.pixels[shelf_id] = [];
@@ -48,15 +58,17 @@ class Editor {
           x <= $pixel.offset().left || x >= $pixel.offset().left + $pixel.outerWidth() ||
           y <= $pixel.offset().top  || y >= $pixel.offset().top + $pixel.outerHeight()
         )) {
-          pixel.onSelect.call(pixel);
+          pixel.onSelect.call(pixel, this.color_picker.getColor());
         }
       }
     }
   }
 
   render() {
-    let $editor = $('<div>').addClass('editor');
-    let $shelf = $('<div>').addClass('shelf');
+    var $shelf = $('<div>').addClass('shelf');
+    var $editor = $('<div>').addClass('editor');
+    var $color_picker = this.color_picker.getElement();
+
 
     this.pixels.forEach((shelf) => {
       let $new_shelf = $shelf.clone();
@@ -68,6 +80,7 @@ class Editor {
       $editor.prepend($new_shelf);
     });
 
+    this.$element.prepend($color_picker);
     this.$element.append($editor);
   }
 
@@ -80,7 +93,7 @@ class Editor {
       });
     });
 
-    connection.send(packet);
+    //connection.send(packet);
     //this.client.publish("client_ff", packet);
   }
 }
