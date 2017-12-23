@@ -9,7 +9,7 @@ function concatTypedArrays(a, b) {
   return c;
 }
 
-var connection = new WebSocket('ws://127.0.0.1:1337');
+var connection = new WebSocket('ws://zackmattor.com:1337');
 connection.binaryType = "arraybuffer";
 
 class Editor {
@@ -43,7 +43,7 @@ class Editor {
 
     this.render();
 
-    setInterval(this.serialize.bind(this), 10);
+    setInterval(this.serialize.bind(this), 1000/60);
   }
 
   highlightHoveredObject(x, y) {
@@ -93,8 +93,7 @@ class Editor {
       });
     });
 
-    //connection.send(packet);
-    //this.client.publish("client_ff", packet);
+    connection.send(packet);
   }
 }
 
