@@ -3,8 +3,12 @@ const rgb = require('../color.js').rgb;
 
 class ColorLadder extends Base {
   start() {
-    this.interval = 1000/10;
     console.log('ColorWalker -> start');
+
+    // Override some internal config variables
+    this.interval = 125;
+    this.brightness = 0.25;
+
     this.tail = 10;
     this.entities = [
       this.entity(0,0,rgb(255,0,0),1,true),

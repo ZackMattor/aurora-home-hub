@@ -3,12 +3,14 @@ const rgb = require('../color.js').rgb;
 class AnimationBase {
   constructor() {
     console.log('AnimationBase -> construct');
-    this.width = 20;
-    this.height = 5;
-    this.shelf = [];
-    this.interval = 1000/20;
-    this.buffer = Buffer.alloc(300, 0, 'binary');
 
+    this.initConfigVariables();
+
+    // internal variables
+    this.buffer = Buffer.alloc(300, 0, 'binary');
+    this.shelf = [];
+
+    // initialize the shelf
     for(var y=0; y<this.height; y++) {
       this.shelf[y] = [];
 
@@ -16,6 +18,13 @@ class AnimationBase {
         this.shelf[y][x] = rgb(0,0,0);
       }
     }
+  }
+
+  initConfigVariables() {
+    this.width = 20;
+    this.height = 5;
+    this.interval = 1000/20;
+    this.brightness = 1;
   }
 
   fill(color) {
@@ -44,9 +53,9 @@ class AnimationBase {
         let index = 3*(h+x);
         let color = this.shelf[y][x];
 
-        this.buffer[index+0] = color.r;
-        this.buffer[index+1] = color.g;
-        this.buffer[index+2] = color.b;
+        this.buffer[index+0] = color.r * this.brightness;
+        this.buffer[index+1] = color.g * this.brightness;
+        this.buffer[index+2] = color.b * this.brightness;
       }
     }
 
