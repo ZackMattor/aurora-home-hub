@@ -28,6 +28,39 @@ class RainbowScroll extends Base {
 
     // Storage Variables
     this.step = 0;
+
+    this.startDemoReel();
+  }
+
+  startDemoReel() {
+    let mode = 0;
+    setInterval(() => {
+      this.dirrection = 0;
+
+      switch(mode%4) {
+        case 0:
+          this.dirrection = 1;
+          this.spectrum_width = 40;
+          this.speed = 3;
+          break;
+        case 1:
+          this.dirrection = 1;
+          this.spectrum_width = 40;
+          this.speed = -10;
+          break;
+        case 2:
+          this.dirrection = 0;
+          this.spectrum_width = 10;
+          this.speed = -5;
+          break;
+        case 3:
+          this.dirrection = 0;
+          this.spectrum_width = 2;
+          this.speed = 3;
+          break;
+      }
+      mode++;
+    }, 8000);
   }
 
   frame() {
