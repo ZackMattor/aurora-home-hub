@@ -19,8 +19,11 @@ class RainbowScroll extends Base {
 
     // set default for moving vertically
     } else {
-      this.spectrum_width = 2; // in pixels
-      this.speed = 3;
+      this.spectrum_width = 10; // in pixels
+      this.speed = -5;
+
+      //this.spectrum_width = 2; // in pixels
+      //this.speed = 3;
     }
 
     // Storage Variables
