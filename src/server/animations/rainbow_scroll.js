@@ -10,18 +10,37 @@ class RainbowScroll extends Base {
     this.brightness = 0.75;
 
     // Animation Configuration Variables
-    this.rainbow_width = 70;
-    this.speed = 2;
+    this.dirrection = 0;
+
+    // set default for moving horizontally
+    if(this.dirrection == 1) {
+      this.spectrum_width = 40; // in pixels
+      this.speed = 3;
+
+    // set default for moving vertically
+    } else {
+      this.spectrum_width = 2; // in pixels
+      this.speed = 3;
+    }
 
     // Storage Variables
     this.step = 0;
   }
 
   frame() {
-    let point = [];
+    let dims = [this.width, this.height];
+    let dimension_a, dimension_b;
 
-    for(var y=0; y<this.height; y++) {
-      let beta = (this.step + ( y * this.rainbow_width )) % 766;
+    if(this.dirrection == 0) {
+      dimension_a = this.height;
+      dimension_b = this.width;
+    } else {
+      dimension_b = this.height;
+      dimension_a = this.width;
+    }
+
+    for(var i=0; i<dimension_a; i++) {
+      let beta = Math.abs(( i*(766/this.spectrum_width) ) + this.step) % 766;
       let magnitude = beta % 256;
       let state = parseInt(beta / 256);
 
@@ -49,8 +68,14 @@ class RainbowScroll extends Base {
           break;
       }
 
-      for(var x=0; x<this.width; x++) {
-        this.setPixel(x,y,rgb(r,g,b));
+      let color = rgb(r,g,b);
+
+      for(var j=0; j<dimension_b; j++) {
+        if(this.dirrection == 1) {
+          this.setPixel(i, j, color);
+        } else {
+          this.setPixel(j, i, color);
+        }
       }
     }
 

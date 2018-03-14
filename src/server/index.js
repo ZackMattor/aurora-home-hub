@@ -1,24 +1,21 @@
 var mqtt = require('mqtt');
-//var WebSocketServer = require('websocket').server;
-//var http = require('http');
+var WebSocketServer = require('websocket').server;
+var http = require('http');
 
-//var client_data = Buffer.alloc(300, 0, 'binary');
-//var server = http.createServer();
+var server = http.createServer();
+server.listen(1337);
+wsServer = new WebSocketServer({
+  httpServer: server
+});
 
-//server.listen(1337);
+wsServer.on('request', (request) => {
+  console.log('Someone connected...');
+  var connection = request.accept(null, request.origin);
 
-//wsServer = new WebSocketServer({
-//  httpServer: server
-//});
-
-//wsServer.on('request', (request) => {
-//  console.log('connection');
-//  var connection = request.accept(null, request.origin);
-//
-//  connection.on('message', (message) => {
-//    client_data = message.binaryData
-//  });
-//});
+  connection.on('message', (message) => {
+    client_data = message.binaryData
+  });
+});
 
 // Setup MQTT
 var client = mqtt.connect("mqtt://mqtt.zackmattor.com:1883");
