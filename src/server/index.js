@@ -24,7 +24,7 @@ var mqtt = require('mqtt');
 var client = mqtt.connect("mqtt://mqtt.zackmattor.com:1883");
 client.on('connect', () => {
   console.log('mqtt connected!');
-  let animation_name = "color_ladder";
+  let animation_name = "rainbow_scroll";
 
   let Klass = require(`./animations/${animation_name}.js`);
   let animation = new Klass();
