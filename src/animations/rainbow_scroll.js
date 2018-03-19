@@ -5,25 +5,31 @@ class RainbowScroll extends Base {
   start() {
     console.log('RainbowScroll -> start');
 
+    this.config = {
+      brightness: 100,
+      speed: 50,
+      spectrum_width: 50,
+      direction: 50
+    };
+
     // Override some internal config variables
     this.interval = 1000/60;
-    this.brightness = 0.75;
 
     // Animation Configuration Variables
-    this.dirrection = 0;
+    this.config.direction = 0;
 
     // set default for moving horizontally
-    if(this.dirrection == 1) {
-      this.spectrum_width = 40; // in pixels
-      this.speed = 3;
+    if(this.config.direction == 1) {
+      this.config.spectrum_width = 40; // in pixels
+      this.config.speed = 3;
 
     // set default for moving vertically
     } else {
-      this.spectrum_width = 10; // in pixels
-      this.speed = -5;
+      this.config.spectrum_width = 10; // in pixels
+      this.config.speed = -5;
 
-      //this.spectrum_width = 2; // in pixels
-      //this.speed = 3;
+      //this.config.spectrum_width = 2; // in pixels
+      //this.config.speed = 3;
     }
 
     // Storage Variables
@@ -35,28 +41,28 @@ class RainbowScroll extends Base {
   startDemoReel() {
     let mode = 0;
     setInterval(() => {
-      this.dirrection = 0;
+      this.config.direction = 0;
 
       switch(mode%4) {
         case 0:
-          this.dirrection = 1;
-          this.spectrum_width = 40;
-          this.speed = 3;
+          this.config.direction = 1;
+          this.config.spectrum_width = 40;
+          this.config.speed = 3;
           break;
         case 1:
-          this.dirrection = 1;
-          this.spectrum_width = 40;
-          this.speed = -10;
+          this.config.direction = 1;
+          this.config.spectrum_width = 40;
+          this.config.speed = -10;
           break;
         case 2:
-          this.dirrection = 0;
-          this.spectrum_width = 10;
-          this.speed = -5;
+          this.config.direction = 0;
+          this.config.spectrum_width = 10;
+          this.config.speed = -5;
           break;
         case 3:
-          this.dirrection = 0;
-          this.spectrum_width = 2;
-          this.speed = 3;
+          this.config.direction = 0;
+          this.config.spectrum_width = 2;
+          this.config.speed = 3;
           break;
       }
       mode++;
@@ -67,7 +73,7 @@ class RainbowScroll extends Base {
     let dims = [this.width, this.height];
     let dimension_a, dimension_b;
 
-    if(this.dirrection == 0) {
+    if(this.config.direction == 0) {
       dimension_a = this.height;
       dimension_b = this.width;
     } else {
@@ -76,7 +82,7 @@ class RainbowScroll extends Base {
     }
 
     for(var i=0; i<dimension_a; i++) {
-      let beta = Math.abs(( i*(766/this.spectrum_width) ) + this.step) % 766;
+      let beta = Math.abs(( i*(766/this.config.spectrum_width) ) + this.step) % 766;
       let magnitude = beta % 256;
       let state = parseInt(beta / 256);
 
@@ -107,7 +113,7 @@ class RainbowScroll extends Base {
       let color = rgb(r,g,b);
 
       for(var j=0; j<dimension_b; j++) {
-        if(this.dirrection == 1) {
+        if(this.config.direction == 1) {
           this.setPixel(i, j, color);
         } else {
           this.setPixel(j, i, color);
@@ -115,7 +121,7 @@ class RainbowScroll extends Base {
       }
     }
 
-    this.step += this.speed;
+    this.step += this.config.speed;
   }
 }
 

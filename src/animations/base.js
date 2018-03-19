@@ -6,6 +6,8 @@ class AnimationBase {
 
     this.initConfigVariables();
 
+    this.name = this.constructor.name.split(/(?=[A-Z])/).join('_').toLowerCase();;
+
     // internal variables
     this.buffer = Buffer.alloc(300, 0, 'binary');
     this.shelf = [];
@@ -24,7 +26,7 @@ class AnimationBase {
     this.width = 20;
     this.height = 5;
     this.interval = 1000/20;
-    this.brightness = 1;
+    this.brightness = 100;
   }
 
   fill(color) {
@@ -33,6 +35,17 @@ class AnimationBase {
         this.setPixel(x,y,color);
       }
     }
+  }
+
+  setNormalizedConfig(cfg) {
+    let map = function(value, min, max) {
+      return min + (max - min) * (value - 0) / 100;
+    };
+
+    //this.config.direction = cfg['direction'];
+    this.config.brightness = map(cfg['brightness'], 0, 100);
+    this.config.speed = map(cfg['speed'], -10, 10);
+    this.config.spectrum_width = map(cfg['spectrum_width'], 0, 50);
   }
 
   setPixel(x, y, color) {
@@ -53,14 +66,16 @@ class AnimationBase {
         let index = 3*(h+x);
         let color = this.shelf[y][x];
 
-        this.buffer[index+0] = color.r * this.brightness;
-        this.buffer[index+1] = color.g * this.brightness;
-        this.buffer[index+2] = color.b * this.brightness;
+        let brightness = this.config['brightness'] / 100;
+        this.buffer[index+0] = color.r * brightness;
+        this.buffer[index+1] = color.g * brightness;
+        this.buffer[index+2] = color.b * brightness;
       }
     }
 
     return this.buffer;
   }
+
 }
 
 module.exports = AnimationBase;

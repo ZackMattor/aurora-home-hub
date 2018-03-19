@@ -2,55 +2,64 @@ var mqtt = require('mqtt');
 var WebSocketServer = require('websocket').server;
 var http = require('http');
 
-var server = http.createServer();
-server.listen(8081);
-wsServer = new WebSocketServer({
-  httpServer: server
-});
+var animation_classes = require('./animations/index.js');
+var devices = require('./devices/index.js');
 
-wsServer.on('request', (request) => {
-  console.log('Someone connected...');
-  var connection = request.accept(null, request.origin);
+let animator = {
+  init() {
+    let desired_animation = 'rainbow_scroll';
 
-  connection.on('message', (message) => {
-    client_data = message.binaryData
-  });
-});
+    this.devices = {
+      'iot_bookcase' : {
+        animations: {}
+      }
+    };
 
-// Setup MQTT
-var client = mqtt.connect("mqtt://mqtt.zackmattor.com:1883");
-client.on('connect', () => {
-  console.log('mqtt connected!');
-  let animation_name = "rainbow_scroll";
+    for(let name in animation_classes) {
+      this.devices['iot_bookcase'].animations[name] = new animation_classes[name]();
+    }
 
-  let Klass = require(`./animations/${animation_name}.js`);
-  let animation = new Klass();
-  animation.start();
+    // MQTT and animation loops
+    var client = mqtt.connect("mqtt://mqtt.zackmattor.com:1883");
+    client.on('connect', () => {
+      console.log('mqtt connected!');
+      let animation = this.devices['iot_bookcase'].animations[desired_animation];
+      animation.start();
 
-  setInterval(() => {
-    client.publish("ff", animation.render());
-  }, animation.interval);
-});
+      setInterval(() => {
+        client.publish("ff", animation.render());
+      }, animation.interval);
+    });
+  },
 
+  setNormalizedConfig(device_name, animation_name, cfg) {
+    this.devices[device_name].animations[animation_name].setNormalizedConfig(cfg);
+  }
+};
 
-//var animation = new Array();
-//var record_count = 0;
-//
-//setInterval(() => {
-//  frame_data = Buffer.alloc(300, 0, 'binary');
-//
-//  if(record_count < 60*10) {
-//    for(var i=0; i<300; i++) {
-//      frame_data[i] = client_data[i] + server_data[i];
-//
-//      if(frame_data[i] > 200) frame_data[i] = 200;
-//
-//      animation[record_count] = frame_data;
-//    }
-//  } else {
-//    frame_data = animation[record_count % (60*10)];
-//  }
-//
-//  record_count++;
-//  client.publish("ff", frame_data);
-//}, 1000/60);
+let server = {
+  init() {
+    var httpServer = http.createServer();
+
+    httpServer.listen(8081);
+    this.ws_server = new WebSocketServer({ httpServer: httpServer });
+    this.ws_server.on('request', this.onRequest.bind(this));
+  },
+
+  onRequest(request) {
+    console.log('Someone connected...');
+    let connection = request.accept(null, request.origin);
+    connection.on('message', this.onMessage.bind(this));
+  },
+
+  onMessage(message) {
+    console.log('Message from client');
+
+    let settings = JSON.parse(message['utf8Data']);
+    console.log(settings);
+    animator.setNormalizedConfig('iot_bookcase', 'rainbow_scroll', settings);
+  }
+};
+
+server.init();
+animator.init();
