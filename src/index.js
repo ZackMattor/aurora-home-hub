@@ -17,6 +17,7 @@ let animator = {
 
     for(let name in animation_classes) {
       this.devices['iot_bookcase'].animations[name] = new animation_classes[name]();
+      this.devices['iot_bookcase'].animations[name].start();
     }
 
     // MQTT and animation loops
@@ -24,7 +25,6 @@ let animator = {
     client.on('connect', () => {
       console.log('mqtt connected!');
       let animation = this.devices['iot_bookcase'].animations[desired_animation];
-      animation.start();
 
       setInterval(() => {
         client.publish("ff", animation.render());

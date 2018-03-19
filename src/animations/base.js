@@ -38,14 +38,10 @@ class AnimationBase {
   }
 
   setNormalizedConfig(cfg) {
-    let map = function(value, min, max) {
-      return min + (max - min) * (value - 0) / 100;
-    };
-
     //this.config.direction = cfg['direction'];
-    this.config.brightness = map(cfg['brightness'], 0, 100);
-    this.config.speed = map(cfg['speed'], -10, 10);
-    this.config.spectrum_width = map(cfg['spectrum_width'], 0, 50);
+    this.config.brightness     = this.config_map(cfg['brightness'], 0, 100);
+    this.config.speed          = this.config_map(cfg['speed'], -10, 10);
+    this.config.spectrum_width = this.config_map(cfg['spectrum_width'], 0, 50);
   }
 
   setPixel(x, y, color) {
@@ -76,6 +72,9 @@ class AnimationBase {
     return this.buffer;
   }
 
+  config_map(value, min, max) {
+    return min + (max - min) * (value - 0) / 100;
+  }
 }
 
 module.exports = AnimationBase;

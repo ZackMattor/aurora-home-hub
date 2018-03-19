@@ -35,7 +35,7 @@ class RainbowScroll extends Base {
     // Storage Variables
     this.step = 0;
 
-    this.startDemoReel();
+    //this.startDemoReel();
   }
 
   startDemoReel() {
@@ -123,6 +123,21 @@ class RainbowScroll extends Base {
 
     this.step += this.config.speed;
   }
+
+  setNormalizedConfig(cfg) {
+    this.config.brightness = this.config_map(cfg['brightness'], 0, 100);
+
+    this.config.direction = 1;
+
+    if(this.config.direction == 1) {
+      this.config.speed          = this.config_map(cfg['speed'], -10, 10);
+      this.config.spectrum_width = parseInt(this.config_map(cfg['spectrum_width'], 10, 100));
+    } else {
+      this.config.speed          = this.config_map(cfg['speed'], -10, 10);
+      this.config.spectrum_width = parseInt(this.config_map(cfg['spectrum_width'], 1, 10));
+    }
+  }
+
 }
 
 module.exports = RainbowScroll;
