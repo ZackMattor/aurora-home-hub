@@ -3,7 +3,7 @@ var WebSocketServer = require('websocket').server;
 var http = require('http');
 
 var server = http.createServer();
-server.listen(1337);
+server.listen(8081);
 wsServer = new WebSocketServer({
   httpServer: server
 });
