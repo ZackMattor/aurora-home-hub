@@ -127,7 +127,7 @@ class RainbowScroll extends Base {
   setNormalizedConfig(cfg) {
     this.config.brightness = this.config_map(cfg['brightness'], 0, 100);
 
-    this.config.direction = 1;
+    this.config.direction = cfg['direction'];
 
     if(this.config.direction == 1) {
       this.config.speed          = this.config_map(cfg['speed'], -10, 10);
