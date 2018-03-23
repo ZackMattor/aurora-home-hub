@@ -34,43 +34,9 @@ class RainbowScroll extends Base {
 
     // Storage Variables
     this.step = 0;
-
-    //this.startDemoReel();
-  }
-
-  startDemoReel() {
-    let mode = 0;
-    setInterval(() => {
-      this.config.direction = 0;
-
-      switch(mode%4) {
-        case 0:
-          this.config.direction = 1;
-          this.config.spectrum_width = 40;
-          this.config.speed = 3;
-          break;
-        case 1:
-          this.config.direction = 1;
-          this.config.spectrum_width = 40;
-          this.config.speed = -10;
-          break;
-        case 2:
-          this.config.direction = 0;
-          this.config.spectrum_width = 10;
-          this.config.speed = -5;
-          break;
-        case 3:
-          this.config.direction = 0;
-          this.config.spectrum_width = 2;
-          this.config.speed = 3;
-          break;
-      }
-      mode++;
-    }, 8000);
   }
 
   frame() {
-    let dims = [this.width, this.height];
     let dimension_a, dimension_b;
 
     if(this.config.direction == 0) {
@@ -91,23 +57,23 @@ class RainbowScroll extends Base {
       let b = 0;
 
       switch(state) {
-        // Red to Green
-        case 0:
-          r = 255 - magnitude;
-          g = magnitude;
-          break;
+      // Red to Green
+      case 0:
+        r = 255 - magnitude;
+        g = magnitude;
+        break;
 
-        // Green to Blue
-        case 1:
-          g = 255 - magnitude;
-          b = magnitude;
-          break;
+      // Green to Blue
+      case 1:
+        g = 255 - magnitude;
+        b = magnitude;
+        break;
 
-        // Blue to Red
-        case 2:
-          b = 255 - magnitude;
-          r = magnitude;
-          break;
+      // Blue to Red
+      case 2:
+        b = 255 - magnitude;
+        r = magnitude;
+        break;
       }
 
       let color = rgb(r,g,b);

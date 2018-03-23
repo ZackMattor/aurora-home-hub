@@ -6,7 +6,7 @@ class AnimationBase {
 
     this.initConfigVariables();
 
-    this.name = this.constructor.name.split(/(?=[A-Z])/).join('_').toLowerCase();;
+    this.name = this.constructor.name.split(/(?=[A-Z])/).join('_').toLowerCase();
 
     // internal variables
     this.buffer = Buffer.alloc(300, 0, 'binary');

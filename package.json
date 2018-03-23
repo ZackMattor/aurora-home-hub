@@ -5,7 +5,8 @@
   "author": "Zack Mattor <zmattor@gmail.com>",
   "private": true,
   "scripts": {
-    "start": ""
+    "start": "node src/index.js",
+    "lint": "./node_modules/.bin/eslint ./src/; exit 0;"
   },
   "dependencies": {
     "mqtt": "^2.14.0",
@@ -14,5 +15,8 @@
   "engines": {
     "node": ">= 9.0.0",
     "npm": ">= 5.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1"
   }
 }

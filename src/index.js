@@ -3,7 +3,8 @@ var WebSocketServer = require('websocket').server;
 var http = require('http');
 
 var animation_classes = require('./animations/index.js');
-var devices = require('./devices/index.js');
+// @TODO - Implement devices
+//var devices = require('./devices/index.js');
 
 let animator = {
   init() {
@@ -21,13 +22,13 @@ let animator = {
     }
 
     // MQTT and animation loops
-    var client = mqtt.connect("mqtt://mqtt.zackmattor.com:1883");
+    var client = mqtt.connect('mqtt://mqtt.zackmattor.com:1883');
     client.on('connect', () => {
       console.log('mqtt connected!');
       let animation = this.devices['iot_bookcase'].animations[desired_animation];
 
       setInterval(() => {
-        client.publish("ff", animation.render());
+        client.publish('ff', animation.render());
       }, animation.interval);
     });
   },
