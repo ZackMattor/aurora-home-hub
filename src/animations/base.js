@@ -29,12 +29,22 @@ class AnimationBase {
     this.brightness = 100;
   }
 
-  fill(color) {
+  eachPixel(cb) {
     for(var y=0; y<this.height; y++) {
       for(var x=0; x<this.width; x++) {
-        this.setPixel(x,y,color);
+        cb(x,y);
       }
     }
+  }
+
+  fill(color) {
+    this.eachPixel((x, y) => {
+      this.setPixel(x,y,color);
+    });
+  }
+
+  clear(color) {
+    this.fill(rgb(0,0,0));
   }
 
   setNormalizedConfig(cfg) {
@@ -73,7 +83,11 @@ class AnimationBase {
   }
 
   config_map(value, min, max) {
-    return min + (max - min) * (value - 0) / 100;
+    return this.map(value, 0, 100, min, max);
+  }
+
+  map(value, from_min, from_max, to_min, to_max) {
+    return to_min + (to_max - to_min) * (value - from_min) / from_max;
   }
 }
 
