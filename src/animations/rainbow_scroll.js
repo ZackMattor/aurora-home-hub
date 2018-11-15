@@ -9,7 +9,7 @@ class RainbowScroll extends Base {
       brightness: 100,
       speed: 50,
       spectrum_width: 50,
-      direction: 50
+      direction: 0
     };
 
     // Override some internal config variables
