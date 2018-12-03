@@ -75,7 +75,7 @@ class AnimationBase {
     });
   }
 
-  clear(color) {
+  clear() {
     this.fill(rgb(0,0,0));
   }
 
