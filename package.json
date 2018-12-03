@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "node src/index.js",
-    "lint": "./node_modules/.bin/eslint ./src/; exit 0;"
+    "lint": "./node_modules/.bin/eslint ./src/"
   },
   "dependencies": {
     "mqtt": "^2.14.0",
