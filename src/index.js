@@ -11,26 +11,54 @@ let animator = {
     let desired_animation = 'rainbow_scroll';
 
     this.devices = {
-      'iot_bookcase' : {
-        animations: {}
+      'zack_bookcase' : {
+        size: {width: 20, height: 5},
+        animations: ['rainbow_scroll', 'color_ladder', 'snowfall'],
+        active_animation: null
       }
     };
 
-    for(let name in animation_classes) {
-      this.devices['iot_bookcase'].animations[name] = new animation_classes[name]();
-      this.devices['iot_bookcase'].animations[name].start();
-    }
+    //for(let name in animation_classes) {
+    //  this.devices['iot_bookcase'].animations[name] = new animation_classes[name]();
+    //  this.devices['iot_bookcase'].animations[name].start();
+    //}
 
     // MQTT and animation loops
-    var client = mqtt.connect('mqtt://mqtt.zackmattor.com:1883');
-    client.on('connect', () => {
-      console.log('mqtt connected!');
-      let animation = this.devices['iot_bookcase'].animations[desired_animation];
+    this.client = mqtt.connect('mqtt://mqtt.zackmattor.com:1883');
 
-      setInterval(() => {
-        client.publish('ff', animation.render());
-      }, animation.interval);
+    this.client.on('connect', () => {
+      console.log('Connected over MQTT!');
+
+      // Firmware doesn't support activation yet...
+      // so this line just mocks it in
+      this.onDeviceMessage('activate', 'zack_bookcase');
     });
+
+    this.client.on('message', this.onDeviceMessage.bind(this));
+  },
+
+  onDeviceMessage(topic, msg) {
+    switch(topic) {
+      case 'activate':
+        let device_name = msg;
+        let device = this.devices[device_name];
+
+        console.log(`${device_name} is trying to activate...`);
+
+        if(!device) {
+          console.log(`Failed to activate ${device_name}`);
+          return;
+        }
+
+        console.log(`${device_name} successfully activated!`);
+
+        device.active_animation = new animation_classes[device.animations[0]]();
+
+        device.active_animation.start((frame) => {
+          this.client.publish('ff', frame);
+        });
+      break;
+    }
   },
 
   setNormalizedConfig(device_name, animation_name, cfg) {

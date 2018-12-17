@@ -10,16 +10,30 @@ class AnimationBase {
 
     // internal variables
     this.buffer = Buffer.alloc(300, 0, 'binary');
-    this.shelf = [];
+    this.canvas = [];
+    this.interval_pointer = null;
 
-    // initialize the shelf
+    // initialize the canvas
     for(var y=0; y<this.height; y++) {
-      this.shelf[y] = [];
+      this.canvas[y] = [];
 
       for(var x=0; x<this.width; x++) {
-        this.shelf[y][x] = rgb(0,0,0);
+        this.canvas[y][x] = rgb(0,0,0);
       }
     }
+  }
+
+  start(frame_cb) {
+    console.log(`Starting the ${this.name} animation`);
+    this.init();
+
+    this.interval_pointer = setInterval(() => {
+      if(frame_cb) frame_cb(this.render());
+    }, this.interval);
+  }
+
+  end() {
+    clearInterval(this.interval_pointer);
   }
 
   gradientMapper(colors, value) {
@@ -89,7 +103,7 @@ class AnimationBase {
   setPixel(x, y, color) {
     if( x >= 0 && y >= 0 &&
         x < this.width && y < this.height ) {
-      this.shelf[y][x] = color;
+      this.canvas[y][x] = color;
     } else {
       console.log(`(${x},${y}) is out of bounds!`);
     }
@@ -102,7 +116,7 @@ class AnimationBase {
       for(var x=0; x<this.width; x++) {
         let h = y * this.width;
         let index = 3*(h+x);
-        let color = this.shelf[y][x];
+        let color = this.canvas[y][x];
 
         let brightness = this.config['brightness'] / 100;
         this.buffer[index+0] = color.r * brightness;

@@ -2,7 +2,7 @@ const Base = require('./base.js');
 const rgb = require('../color.js').rgb;
 
 class RainbowScroll extends Base {
-  start() {
+  init() {
     console.log('RainbowScroll -> start');
 
     this.config = {
@@ -103,7 +103,6 @@ class RainbowScroll extends Base {
       this.config.spectrum_width = parseInt(this.config_map(cfg['spectrum_width'], 1, 10));
     }
   }
-
 }
 
 module.exports = RainbowScroll;

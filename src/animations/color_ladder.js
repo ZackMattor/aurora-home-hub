@@ -2,7 +2,7 @@ const Base = require('./base.js');
 const rgb = require('../color.js').rgb;
 
 class ColorLadder extends Base {
-  start() {
+  init() {
     console.log('ColorWalker -> start');
 
     // Override some internal config variables
