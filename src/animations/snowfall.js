@@ -14,14 +14,14 @@ class Snowfall extends Base {
     };
 
     // Override some internal config variables
-    this.interval = 1000/60;
+    this.interval = 1000 / 60;
 
     // Storage Variables
     this.step = 0;
   }
 
   frame() {
-    this.fill(rgb(200,200,200));
+    this.fill(rgb(200, 200, 200));
     this.step += this.config.speed;
   }
 }

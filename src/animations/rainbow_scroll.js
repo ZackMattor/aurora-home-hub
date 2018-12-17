@@ -27,9 +27,6 @@ class RainbowScroll extends Base {
     } else {
       this.config.spectrum_width = 10; // in pixels
       this.config.speed = -5;
-
-      //this.config.spectrum_width = 2; // in pixels
-      //this.config.speed = 3;
     }
 
     // Storage Variables

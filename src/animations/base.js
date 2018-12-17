@@ -1,6 +1,18 @@
 const rgb = require('../color.js').rgb;
 
 class AnimationBase {
+  init() {
+    throw 'Implementation must include a "init" method';
+  }
+
+  frame() {
+    throw 'Implementation must include a "frame" method';
+  }
+
+  setNormalizedConfig() {
+    throw 'Implementation must include a "setNormalizedConfig" method';
+  }
+
   constructor(size) {
     console.log('AnimationBase -> construct');
 
@@ -88,13 +100,6 @@ class AnimationBase {
 
   clear() {
     this.fill(rgb(0,0,0));
-  }
-
-  setNormalizedConfig(cfg) {
-    //this.config.direction = cfg['direction'];
-    this.config.brightness     = this.config_map(cfg['brightness'], 0, 100);
-    this.config.speed          = this.config_map(cfg['speed'], -10, 10);
-    this.config.spectrum_width = this.config_map(cfg['spectrum_width'], 0, 50);
   }
 
   setPixel(x, y, color) {
