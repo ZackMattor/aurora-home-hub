@@ -1,10 +1,8 @@
 var mqtt = require('mqtt');
-var WebSocketServer = require('websocket').server;
 var http = require('http');
+var WebSocketServer = require('websocket').server;
 
-var animation_classes = require('./animations/index.js');
-// @TODO - Implement devices
-//var devices = require('./devices/index.js');
+var AnimationClasses = require('./animations/index.js');
 
 let animator = {
   init() {
@@ -12,16 +10,11 @@ let animator = {
 
     this.devices = {
       'zack_bookcase' : {
-        size: {width: 20, height: 5},
+        size: { width: 20, height: 5 },
         animations: ['rainbow_scroll', 'color_ladder', 'snowfall'],
         active_animation: null
       }
     };
-
-    //for(let name in animation_classes) {
-    //  this.devices['iot_bookcase'].animations[name] = new animation_classes[name]();
-    //  this.devices['iot_bookcase'].animations[name].start();
-    //}
 
     // MQTT and animation loops
     this.client = mqtt.connect('mqtt://mqtt.zackmattor.com:1883');
@@ -52,7 +45,7 @@ let animator = {
 
         console.log(`${device_name} successfully activated!`);
 
-        device.active_animation = new animation_classes[device.animations[0]]();
+        device.active_animation = new AnimationClasses[device.animations[0]](device.size);
 
         device.active_animation.start((frame) => {
           this.client.publish('ff', frame);

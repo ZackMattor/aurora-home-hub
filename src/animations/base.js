@@ -1,23 +1,27 @@
 const rgb = require('../color.js').rgb;
 
 class AnimationBase {
-  constructor() {
+  constructor(size) {
     console.log('AnimationBase -> construct');
-
-    this.initConfigVariables();
 
     this.name = this.constructor.name.split(/(?=[A-Z])/).join('_').toLowerCase();
 
     // internal variables
-    this.buffer = Buffer.alloc(300, 0, 'binary');
+    this.width = size.width;
+    this.height = size.height;
+    this.interval = 1000/20;
+
     this.canvas = [];
     this.interval_pointer = null;
 
+    let buffer_size = this.width * this.height * 3;
+    this.buffer = Buffer.alloc(buffer_size, 0, 'binary');
+
     // initialize the canvas
-    for(var y=0; y<this.height; y++) {
+    for(let y = 0; y < this.height; y++) {
       this.canvas[y] = [];
 
-      for(var x=0; x<this.width; x++) {
+      for(let x = 0; x < this.width; x++) {
         this.canvas[y][x] = rgb(0,0,0);
       }
     }
@@ -66,13 +70,6 @@ class AnimationBase {
     let b = this.map(progress, 0, resolution, color_a.b, color_b.b);
 
     return rgb(r, g, b);
-  }
-
-  initConfigVariables() {
-    this.width = 20;
-    this.height = 5;
-    this.interval = 1000/20;
-    this.brightness = 100;
   }
 
   eachPixel(cb) {
