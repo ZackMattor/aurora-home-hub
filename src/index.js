@@ -6,8 +6,6 @@ var AnimationClasses = require('./animations/index.js');
 
 let animator = {
   init() {
-    let desired_animation = 'rainbow_scroll';
-
     this.devices = {
       'zack_bookcase' : {
         size: { width: 20, height: 5 },
@@ -23,8 +21,12 @@ let animator = {
       console.log('Connected over MQTT!');
 
       // Firmware doesn't support activation yet...
-      // so this line just mocks it in
-      this.onDeviceMessage('activate', 'zack_bookcase');
+      // so this line just mocks it in for the bookcase
+      this.onDeviceMessage('activate', {
+        name: 'zack_bookcase',
+        id: '12345678',
+        size: { width: 20, height: 5 }
+      });
     });
 
     this.client.on('message', this.onDeviceMessage.bind(this));
@@ -48,6 +50,7 @@ let animator = {
         device.active_animation = new AnimationClasses[device.animations[0]](device.size);
 
         device.active_animation.start((frame) => {
+          //this.client.publish('ff', frame);
           this.client.publish('ff', frame);
         });
       break;
