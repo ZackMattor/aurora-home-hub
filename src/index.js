@@ -1,19 +1,13 @@
 var mqtt = require('mqtt');
 var http = require('http');
 var WebSocketServer = require('websocket').server;
-
 var AnimationClasses = require('./animations/index.js');
 
 let animator = {
-  init() {
-    this.devices = {
-      'zack_bookcase' : {
-        size: { width: 20, height: 5 },
-        animations: ['rainbow_scroll', 'color_ladder', 'snowfall'],
-        active_animation: null
-      }
-    };
+  client: null,
+  devices: {},
 
+  init() {
     // MQTT and animation loops
     this.client = mqtt.connect('mqtt://mqtt.zackmattor.com:1883');
 
@@ -30,27 +24,35 @@ let animator = {
     });
 
     this.client.on('message', this.onDeviceMessage.bind(this));
+    this.client.publish('aurora_server_online', 'true');
   },
 
   onDeviceMessage(topic, msg) {
     switch(topic) {
       case 'activate':
-        let device_name = msg;
-        let device = this.devices[device_name];
+        let device_name = msg.name;
+        let device_size = msg.size;
 
         console.log(`${device_name} is trying to activate...`);
 
-        if(!device) {
-          console.log(`Failed to activate ${device_name}`);
-          return;
-        }
+        // Logic to possibly fail activation...
+        // if(!device) {
+        //   console.log(`Failed to activate ${device_name}`);
+        //   return;
+        // }
 
         console.log(`${device_name} successfully activated!`);
 
-        device.active_animation = new AnimationClasses[device.animations[0]](device.size);
+        // TODO - make a device class
+        this.devices[device_name] = {
+          last_launched: Date.now(),
+          name: device_name,
+          size: device_size,
+          active_animation: new AnimationClasses.rainbow_scroll(device_size),
+        }
 
-        device.active_animation.start((frame) => {
-          //this.client.publish('ff', frame);
+        this.devices[device_name].active_animation.start((frame) => {
+          // TODO - Make this publish based on ID
           this.client.publish('ff', frame);
         });
       break;
