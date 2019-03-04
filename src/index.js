@@ -29,32 +29,32 @@ let animator = {
 
   onDeviceMessage(topic, msg) {
     switch(topic) {
-      case 'activate':
-        let device_name = msg.name;
-        let device_size = msg.size;
+    case 'activate':
+      var device_name = msg.name;
+      var device_size = msg.size;
 
-        console.log(`${device_name} is trying to activate...`);
+      console.log(`${device_name} is trying to activate...`);
 
-        // Logic to possibly fail activation...
-        // if(!device) {
-        //   console.log(`Failed to activate ${device_name}`);
-        //   return;
-        // }
+      // Logic to possibly fail activation...
+      // if(!device) {
+      //   console.log(`Failed to activate ${device_name}`);
+      //   return;
+      // }
 
-        console.log(`${device_name} successfully activated!`);
+      console.log(`${device_name} successfully activated!`);
 
-        // TODO - make a device class
-        this.devices[device_name] = {
-          last_launched: Date.now(),
-          name: device_name,
-          size: device_size,
-          active_animation: new AnimationClasses.rainbow_scroll(device_size),
-        }
+      // TODO - make a device class
+      this.devices[device_name] = {
+        last_launched: Date.now(),
+        name: device_name,
+        size: device_size,
+        active_animation: new AnimationClasses.rainbow_scroll(device_size),
+      };
 
-        this.devices[device_name].active_animation.start((frame) => {
-          // TODO - Make this publish based on ID
-          this.client.publish('ff', frame);
-        });
+      this.devices[device_name].active_animation.start((frame) => {
+        // TODO - Make this publish based on ID
+        this.client.publish('ff', frame);
+      });
       break;
     }
   },

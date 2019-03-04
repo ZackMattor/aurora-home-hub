@@ -5,7 +5,7 @@ class Snowfall extends Base {
   init() {
     console.log('RainbowScroll -> start');
   
-    let snow_sprites = [];
+    //let snow_sprites = [];
 
     this.config = {
       brightness: 100,
