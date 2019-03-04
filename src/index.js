@@ -1,66 +1,24 @@
-var mqtt = require('mqtt');
-var WebSocketServer = require('websocket').server;
-var http = require('http');
+const AppServer = require('./app_server.js');
+const DeviceServer = require('./device_server.js');
+const AnimationClasses = require('./animations/index.js');
 
-var animation_classes = require('./animations/index.js');
-// @TODO - Implement devices
-//var devices = require('./devices/index.js');
+let devices = [];
 
-let animator = {
-  init() {
-    let desired_animation = 'rainbow_scroll';
+let device_server = new DeviceServer();
+let app_server = new AppServer();
 
-    this.devices = {
-      'iot_bookcase' : {
-        animations: {}
-      }
-    };
+device_server.on('new_device', (device) => {
+  console.log('NEW DEVICE CONNECTEd');
 
-    for(let name in animation_classes) {
-      this.devices['iot_bookcase'].animations[name] = new animation_classes[name]();
-      this.devices['iot_bookcase'].animations[name].start();
-    }
+  devices[device.name] = device;
 
-    // MQTT and animation loops
-    var client = mqtt.connect('mqtt://mqtt.zackmattor.com:1883');
-    client.on('connect', () => {
-      console.log('mqtt connected!');
-      let animation = this.devices['iot_bookcase'].animations[desired_animation];
+  device.active_animation = new AnimationClasses.rainbow_scroll(device.size),
+  device.active_animation.start((frame) => {
+    // TODO - Make this publish based on ID
+    device.client.publish('ff', frame);
+  });
+});
 
-      setInterval(() => {
-        client.publish('ff', animation.render());
-      }, animation.interval);
-    });
-  },
-
-  setNormalizedConfig(device_name, animation_name, cfg) {
-    this.devices[device_name].animations[animation_name].setNormalizedConfig(cfg);
-  }
-};
-
-let server = {
-  init() {
-    var httpServer = http.createServer();
-
-    httpServer.listen(8081);
-    this.ws_server = new WebSocketServer({ httpServer: httpServer });
-    this.ws_server.on('request', this.onRequest.bind(this));
-  },
-
-  onRequest(request) {
-    console.log('Someone connected...');
-    let connection = request.accept(null, request.origin);
-    connection.on('message', this.onMessage.bind(this));
-  },
-
-  onMessage(message) {
-    console.log('Message from client');
-
-    let settings = JSON.parse(message['utf8Data']);
-    console.log(settings);
-    animator.setNormalizedConfig('iot_bookcase', 'rainbow_scroll', settings);
-  }
-};
-
-server.init();
-animator.init();
+app_server.on('change_settings', (data) => {
+  this.devices[data.device_name].animations[data.animation_name].setNormalizedConfig(data.settings);
+});

@@ -1,25 +1,55 @@
 const rgb = require('../color.js').rgb;
 
 class AnimationBase {
-  constructor() {
-    console.log('AnimationBase -> construct');
+  init() {
+    throw 'Implementation must include a "init" method';
+  }
 
-    this.initConfigVariables();
+  frame() {
+    throw 'Implementation must include a "frame" method';
+  }
+
+  setNormalizedConfig() {
+    throw 'Implementation must include a "setNormalizedConfig" method';
+  }
+
+  constructor(size) {
+    console.log('AnimationBase -> construct');
 
     this.name = this.constructor.name.split(/(?=[A-Z])/).join('_').toLowerCase();
 
     // internal variables
-    this.buffer = Buffer.alloc(300, 0, 'binary');
-    this.shelf = [];
+    this.width = size.width;
+    this.height = size.height;
+    this.interval = 1000/20;
 
-    // initialize the shelf
-    for(var y=0; y<this.height; y++) {
-      this.shelf[y] = [];
+    this.canvas = [];
+    this.interval_pointer = null;
 
-      for(var x=0; x<this.width; x++) {
-        this.shelf[y][x] = rgb(0,0,0);
+    let buffer_size = this.width * this.height * 3;
+    this.buffer = Buffer.alloc(buffer_size, 0, 'binary');
+
+    // initialize the canvas
+    for(let y = 0; y < this.height; y++) {
+      this.canvas[y] = [];
+
+      for(let x = 0; x < this.width; x++) {
+        this.canvas[y][x] = rgb(0,0,0);
       }
     }
+  }
+
+  start(frame_cb) {
+    console.log(`Starting the ${this.name} animation`);
+    this.init();
+
+    this.interval_pointer = setInterval(() => {
+      if(frame_cb) frame_cb(this.render());
+    }, this.interval);
+  }
+
+  end() {
+    clearInterval(this.interval_pointer);
   }
 
   gradientMapper(colors, value) {
@@ -54,13 +84,6 @@ class AnimationBase {
     return rgb(r, g, b);
   }
 
-  initConfigVariables() {
-    this.width = 20;
-    this.height = 5;
-    this.interval = 1000/20;
-    this.brightness = 100;
-  }
-
   eachPixel(cb) {
     for(var y=0; y<this.height; y++) {
       for(var x=0; x<this.width; x++) {
@@ -79,17 +102,10 @@ class AnimationBase {
     this.fill(rgb(0,0,0));
   }
 
-  setNormalizedConfig(cfg) {
-    //this.config.direction = cfg['direction'];
-    this.config.brightness     = this.config_map(cfg['brightness'], 0, 100);
-    this.config.speed          = this.config_map(cfg['speed'], -10, 10);
-    this.config.spectrum_width = this.config_map(cfg['spectrum_width'], 0, 50);
-  }
-
   setPixel(x, y, color) {
     if( x >= 0 && y >= 0 &&
         x < this.width && y < this.height ) {
-      this.shelf[y][x] = color;
+      this.canvas[y][x] = color;
     } else {
       console.log(`(${x},${y}) is out of bounds!`);
     }
@@ -102,7 +118,7 @@ class AnimationBase {
       for(var x=0; x<this.width; x++) {
         let h = y * this.width;
         let index = 3*(h+x);
-        let color = this.shelf[y][x];
+        let color = this.canvas[y][x];
 
         let brightness = this.config['brightness'] / 100;
         this.buffer[index+0] = color.r * brightness;
