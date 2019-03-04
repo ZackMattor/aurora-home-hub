@@ -4,7 +4,7 @@ const rgb = require('../color.js').rgb;
 class Snowfall extends Base {
   init() {
     console.log('RainbowScroll -> start');
-  
+
     //let snow_sprites = [];
 
     this.config = {
