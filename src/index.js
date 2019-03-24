@@ -12,7 +12,7 @@ device_server.on('new_device', (device) => {
 
   devices[device.name] = device;
 
-  device.active_animation = new AnimationClasses.rainbow_scroll(device.size),
+  device.active_animation = new AnimationClasses.rainbow_scroll(device.size);
   device.active_animation.start((frame) => {
     // TODO - Make this publish based on ID
     device.client.publish('ff', frame);

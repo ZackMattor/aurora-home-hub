@@ -50,7 +50,7 @@ module.exports = class DeviceServer extends EventEmitter {
       break;
 
     // TODO
-    //case 'ping':
+    // case 'ping':
     //  break;
     }
   }

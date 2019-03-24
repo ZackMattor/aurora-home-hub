@@ -22,7 +22,7 @@ module.exports = class AppServer extends EventEmitter {
   onMessage(message) {
     console.log('Message from client');
 
-    let settings = JSON.parse(message['utf8Data']);
+    let settings = JSON.parse(message.utf8Data);
     console.log(settings);
 
     this.emit('change_settings', {

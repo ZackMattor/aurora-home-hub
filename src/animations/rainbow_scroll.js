@@ -19,7 +19,7 @@ class RainbowScroll extends Base {
     this.config.direction = 0;
 
     // set default for moving horizontally
-    if(this.config.direction == 1) {
+    if(this.config.direction === 1) {
       this.config.spectrum_width = 40; // in pixels
       this.config.speed = 3;
 
@@ -36,7 +36,7 @@ class RainbowScroll extends Base {
   frame() {
     let dimension_a, dimension_b;
 
-    if(this.config.direction == 0) {
+    if(this.config.direction === 0) {
       dimension_a = this.height;
       dimension_b = this.width;
     } else {
@@ -76,7 +76,7 @@ class RainbowScroll extends Base {
       let color = rgb(r,g,b);
 
       for(var j=0; j<dimension_b; j++) {
-        if(this.config.direction == 1) {
+        if(this.config.direction === 1) {
           this.setPixel(i, j, color);
         } else {
           this.setPixel(j, i, color);
@@ -88,16 +88,16 @@ class RainbowScroll extends Base {
   }
 
   setNormalizedConfig(cfg) {
-    this.config.brightness = this.config_map(cfg['brightness'], 0, 100);
+    this.config.brightness = this.config_map(cfg.brightness, 0, 100);
 
-    this.config.direction = cfg['direction'];
+    this.config.direction = cfg.direction;
 
-    if(this.config.direction == 1) {
-      this.config.speed          = this.config_map(cfg['speed'], -10, 10);
-      this.config.spectrum_width = parseInt(this.config_map(cfg['spectrum_width'], 10, 100));
+    if(this.config.direction === 1) {
+      this.config.speed          = this.config_map(cfg.speed, -10, 10);
+      this.config.spectrum_width = parseInt(this.config_map(cfg.spectrum_width, 10, 100));
     } else {
-      this.config.speed          = this.config_map(cfg['speed'], -10, 10);
-      this.config.spectrum_width = parseInt(this.config_map(cfg['spectrum_width'], 1, 10));
+      this.config.speed          = this.config_map(cfg.speed, -10, 10);
+      this.config.spectrum_width = parseInt(this.config_map(cfg.spectrum_width, 1, 10));
     }
   }
 }

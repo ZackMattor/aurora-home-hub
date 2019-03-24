@@ -5,11 +5,13 @@
   "author": "Zack Mattor <zmattor@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "node src/index.js",
-    "lint": "./node_modules/.bin/eslint ./src/"
+    "start": "node --require esm src/index.js",
+    "test": "nyc mocha --require esm",
+    "lint": "eslint src/**"
   },
   "dependencies": {
     "mqtt": "^2.14.0",
+    "esm": "^3.2.16",
     "websocket": "^1.0.25"
   },
   "engines": {

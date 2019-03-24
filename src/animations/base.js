@@ -54,9 +54,9 @@ class AnimationBase {
 
   gradientMapper(colors, value) {
     // colors - rgb(255,0,0), rgb(0,255,0), 
-    //let resolution = 256;
-    //let max_beta = colors.length * resolution;
-    //let beta = this.map(value, 0, 1024, 0, max_beta);
+    // let resolution = 256;
+    // let max_beta = colors.length * resolution;
+    // let beta = this.map(value, 0, 1024, 0, max_beta);
 
     let resolution = 1024 / (colors.length-1);
     let index = parseInt(value / resolution);
@@ -64,7 +64,7 @@ class AnimationBase {
     console.log(`index - ${index}`);
     console.log(`value - ${value}`);
     console.log(`resolution - ${resolution}`);
-    //console.log(`beta - ${beta}`);
+    // console.log(`beta - ${beta}`);
 
     let color_a = colors[index];
     let color_b = colors[(index+1) % colors.length];
@@ -74,9 +74,9 @@ class AnimationBase {
     let progress = value - resolution;
     console.log(`progress - ${progress}`);
 
-    //let r = this.map(value, index*resolution, ( index+1 )*resolution, color_a.r, color_b.r);
-    //let g = this.map(value, index*resolution, ( index+1 )*resolution, color_a.g, color_b.g);
-    //let b = this.map(value, index*resolution, ( index+1 )*resolution, color_a.b, color_b.b);
+    // let r = this.map(value, index*resolution, ( index+1 )*resolution, color_a.r, color_b.r);
+    // let g = this.map(value, index*resolution, ( index+1 )*resolution, color_a.g, color_b.g);
+    // let b = this.map(value, index*resolution, ( index+1 )*resolution, color_a.b, color_b.b);
     let r = this.map(progress, 0, resolution, color_a.r, color_b.r);
     let g = this.map(progress, 0, resolution, color_a.g, color_b.g);
     let b = this.map(progress, 0, resolution, color_a.b, color_b.b);
@@ -120,7 +120,7 @@ class AnimationBase {
         let index = 3*(h+x);
         let color = this.canvas[y][x];
 
-        let brightness = this.config['brightness'] / 100;
+        let brightness = this.config.brightness / 100;
         this.buffer[index+0] = color.r * brightness;
         this.buffer[index+1] = color.g * brightness;
         this.buffer[index+2] = color.b * brightness;

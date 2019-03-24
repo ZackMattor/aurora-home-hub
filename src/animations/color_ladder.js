@@ -23,7 +23,7 @@ class ColorLadder extends Base {
       this.entity(19,4,rgb(0,0,255),-1,true)
     ];
 
-    //this.fill(rgb(255,255,0));
+    // this.fill(rgb(255,255,0));
   }
 
   entity(x, y, color, vx, goes_up) {
