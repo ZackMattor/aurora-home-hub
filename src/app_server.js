@@ -1,15 +1,15 @@
-const WebSocketServer = require('websocket').server;
-const http = require('http');
-const EventEmitter = require('events');
+import http from 'http';
+import EventEmitter from 'events';
+import { server as WebsocketServer } from 'websocket';
 
-module.exports = class AppServer extends EventEmitter {
+export class AppServer extends EventEmitter {
   constructor() {
     super();
 
     var httpServer = http.createServer();
 
     httpServer.listen(8081);
-    this.ws_server = new WebSocketServer({ httpServer: httpServer });
+    this.ws_server = new WebsocketServer({ httpServer: httpServer });
     this.ws_server.on('request', this.onRequest.bind(this));
   }
 
@@ -31,4 +31,4 @@ module.exports = class AppServer extends EventEmitter {
       settings: settings
     });
   }
-};
+}

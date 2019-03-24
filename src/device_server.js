@@ -1,7 +1,7 @@
-const mqtt = require('mqtt');
-const EventEmitter = require('events');
+import mqtt from 'mqtt';
+import EventEmitter from 'events';
 
-module.exports = class DeviceServer extends EventEmitter {
+export class DeviceServer extends EventEmitter {
   constructor() {
     super();
 
@@ -54,4 +54,4 @@ module.exports = class DeviceServer extends EventEmitter {
     //  break;
     }
   }
-};
+}

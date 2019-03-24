@@ -1,7 +1,7 @@
-const Base = require('./base.js');
-const rgb = require('../color.js').rgb;
+import { AnimationBase } from './base';
+import { rgb } from '../color';
 
-class Snowfall extends Base {
+export class Snowfall extends AnimationBase {
   init() {
     console.log('RainbowScroll -> start');
 
@@ -25,5 +25,3 @@ class Snowfall extends Base {
     this.step += this.config.speed;
   }
 }
-
-module.exports = Snowfall;

@@ -1,6 +1,6 @@
-const AppServer = require('./app_server.js');
-const DeviceServer = require('./device_server.js');
-const AnimationClasses = require('./animations/index.js');
+import AnimationClasses from './animations/index';
+import { AppServer } from './app_server';
+import { DeviceServer } from './device_server';
 
 let devices = [];
 

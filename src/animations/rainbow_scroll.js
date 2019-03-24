@@ -1,7 +1,7 @@
-const Base = require('./base.js');
-const rgb = require('../color.js').rgb;
+import { AnimationBase } from './base';
+import { rgb } from '../color';
 
-class RainbowScroll extends Base {
+export class RainbowScroll extends AnimationBase {
   init() {
     console.log('RainbowScroll -> start');
 
@@ -101,5 +101,3 @@ class RainbowScroll extends Base {
     }
   }
 }
-
-module.exports = RainbowScroll;

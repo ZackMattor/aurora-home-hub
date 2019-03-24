@@ -1,7 +1,7 @@
-const Base = require('./base.js');
-const rgb = require('../color.js').rgb;
+import { AnimationBase } from './base';
+import { rgb } from '../color';
 
-class ColorLadder extends Base {
+export class ColorLadder extends AnimationBase {
   init() {
     console.log('ColorWalker -> start');
 
@@ -50,5 +50,3 @@ class ColorLadder extends Base {
     }
   }
 }
-
-module.exports = ColorLadder;

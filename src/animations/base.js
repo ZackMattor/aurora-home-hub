@@ -1,6 +1,6 @@
-const rgb = require('../color.js').rgb;
+import { rgb } from '../color';
 
-class AnimationBase {
+export class AnimationBase {
   init() {
     throw 'Implementation must include a "init" method';
   }
@@ -138,5 +138,3 @@ class AnimationBase {
     return to_min + (to_max - to_min) * (value - from_min) / from_max;
   }
 }
-
-module.exports = AnimationBase;

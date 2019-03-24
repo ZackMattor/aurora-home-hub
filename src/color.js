@@ -1,4 +1,4 @@
-exports.rgb = function(r,g,b) {
+export function rgb(r,g,b) {
   if(r < 0) r = 0;
   if(g < 0) g = 0;
   if(b < 0) b = 0;
@@ -11,4 +11,4 @@ exports.rgb = function(r,g,b) {
     g: g,
     b: b
   };
-};
+}
