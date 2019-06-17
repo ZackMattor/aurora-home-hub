@@ -1,7 +1,7 @@
 {
   "name": "shelfio",
   "version": "1.0.0",
-  "description": "shelfio",
+  "description": "AuroraServer",
   "author": "Zack Mattor <zmattor@gmail.com>",
   "private": true,
   "scripts": {
