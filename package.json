@@ -10,8 +10,9 @@
     "lint": "eslint src/**"
   },
   "dependencies": {
-    "mqtt": "^2.14.0",
+    "dotenv": "^7.0.0",
     "esm": "^3.2.16",
+    "mqtt": "^2.14.0",
     "websocket": "^1.0.25"
   },
   "engines": {

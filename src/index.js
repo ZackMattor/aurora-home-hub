@@ -1,10 +1,15 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import AnimationClasses from './animations/index';
 import { AppServer } from './app_server';
 import { DeviceServer } from './device_server';
 
 let devices = [];
 
-let device_server = new DeviceServer();
+const mqtt_endpoint = process.env.MQTT_ENDPOINT || 'mqtt://localhost:1883';
+
+let device_server = new DeviceServer(mqtt_endpoint);
 let app_server = new AppServer();
 
 device_server.on('new_device', (device) => {

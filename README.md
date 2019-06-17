@@ -21,3 +21,9 @@ npm run build --report
 
 # before pushing run `npm run lint`
 ```
+
+## Environment Variables
+
+```
+MQTT_ENDPOINT | mqtt://localhost:1883
+```

@@ -2,11 +2,11 @@ import mqtt from 'mqtt';
 import EventEmitter from 'events';
 
 export class DeviceServer extends EventEmitter {
-  constructor() {
+  constructor(mqtt_endpoint) {
     super();
 
     // MQTT and animation loops
-    this.client = mqtt.connect('mqtt://mqtt.zackmattor.com:1883');
+    this.client = mqtt.connect(mqtt_endpoint);
 
     this.client.on('connect', () => {
       console.log('Connected over MQTT!');
