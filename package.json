@@ -6,10 +6,12 @@
   "private": true,
   "scripts": {
     "start": "node --require esm src/index.js",
+    "start_test": "node --require esm test/device.js",
     "test": "nyc mocha --require esm",
     "lint": "eslint src/**"
   },
   "dependencies": {
+    "chalk": "^2.4.2",
     "dotenv": "^7.0.0",
     "esm": "^3.2.16",
     "mqtt": "^2.14.0",
