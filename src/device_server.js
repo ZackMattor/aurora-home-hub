@@ -27,6 +27,7 @@ export class DeviceServer extends EventEmitter {
   onDeviceMessage(topic, msg) {
     switch(topic) {
     case 'activate':
+      let activate_info = JSON.parse(msg);
       var device_name = msg.name;
       var device_size = msg.size;
 

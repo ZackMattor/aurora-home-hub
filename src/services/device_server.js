@@ -3,37 +3,12 @@
 // them as a Device. Then after they are registered we can start
 // the animation for that device.
 
-import mqtt from 'mqtt';
+export class DeviceServer {
+  constructor(mqtt_client, devices) {
+    this.mqtt = mqtt_client;
+    this.devices = devices;
 
-const mqtt_actions = {
-  activate(msg) {
-    var device_name = msg.name;
-    var device_size = msg.size;
-
-    console.log(`${device_name} is trying to activate...`);
-    // Logic to possibly fail activation...
-    console.log(`${device_name} successfully activated!`);
-
-    this.emit('new_device', {
-      last_launched: Date.now(),
-      name: device_name,
-      size: device_size,
-      client: this.client
-    });
-  },
-
-  ping(msg) {
-    console.log(ping);
-  }
-};
-
-export class DeviceServer extends EventEmitter {
-  constructor(mqtt_endpoint) {
-    super();
-
-    // MQTT and animation loops
-    this.mqtt = mqtt.connect(mqtt_endpoint);
-
+    this.mqtt.subscribe('activate');
     this.mqtt.on('message', this.onDeviceMessage.bind(this));
     this.mqtt.publish('aurora_server_online', 'true');
   }
@@ -43,3 +18,14 @@ export class DeviceServer extends EventEmitter {
     action.call(this, msg);
   }
 }
+
+const mqtt_actions = {
+  activate(msg) {
+    let activate_info = JSON.parse(msg);
+    this.devices.activateDevice(activate_info);
+  },
+
+  ping(msg) {
+    console.log(ping);
+  }
+};
