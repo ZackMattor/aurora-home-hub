@@ -20,6 +20,6 @@
     "npm": ">= 6.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.13.0"
+    "eslint": "^5.16.0"
   }
 }
