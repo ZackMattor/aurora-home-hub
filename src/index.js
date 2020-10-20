@@ -1,29 +1,15 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import { DeviceConnService } from './services/device_conn';
+import { ServerConnService } from './services/server_conn';
 
-import AnimationClasses from './animations/index';
-import { AppServer } from './app_server';
-import { DeviceServer } from './device_server';
+import { DeviceStore } from './stores/device';
 
-let devices = [];
+const MQTT_SERVER_URL = process.env.MQTT_SERVER_URL || 'mqtt://127.0.0.1';
+const API_KEY = process.env.AURORA_HUB_API_KEY || 'API_KEY';
+const SERVER_URL = process.env.AURORA_SERVER_URL || 'https://aurora.example.com';
 
-const mqtt_endpoint = process.env.MQTT_ENDPOINT || 'mqtt://localhost:1883';
+const serverConn = new ServerConnService(SERVER_URL, API_KEY);
+const devices = new DeviceStore(serverConn);
+const deviceConn = new DeviceConnService(MQTT_SERVER_URL, devices);
 
-let device_server = new DeviceServer(mqtt_endpoint);
-let app_server = new AppServer();
-
-device_server.on('new_device', (device) => {
-  console.log('NEW DEVICE CONNECTEd');
-
-  devices[device.name] = device;
-
-  device.active_animation = new AnimationClasses.rainbow_scroll(device.size);
-  device.active_animation.start((frame) => {
-    // TODO - Make this publish based on ID
-    device.client.publish('ff', frame);
-  });
-});
-
-app_server.on('change_settings', (data) => {
-  this.devices[data.device_name].animations[data.animation_name].setNormalizedConfig(data.settings);
-});
+deviceConn.listen();
+serverConn.listen();
