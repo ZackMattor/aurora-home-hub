@@ -3,14 +3,23 @@ import { Pixel } from '../pixel';
 const FPS = 30;
 
 export class AnimationBase {
-  constructor(sendMsg, led_count) {
-    this._led_count = led_count;
-    this._sendMsg = sendMsg;
+  constructor(device) {
+    this._led_count = device.geometry.led_count;
     this._interval = null;
     this._frame = [];
     this._count = 0;
+    this._device = device;
 
     this.clear();
+    this.init();
+  }
+
+  init() {
+    throw 'Implementation must include a "init" method';
+  }
+
+  get device() {
+    return this._device;
   }
 
   fill(pixel) {
@@ -46,7 +55,7 @@ export class AnimationBase {
   //}
 
   _writeFrame() {
-    this._sendMsg('ff', this._render(this.frame));
+    this.device.sendFrame(this._render(this.frame));
   }
 
   get ledCount() {

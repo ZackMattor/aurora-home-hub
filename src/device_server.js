@@ -1,3 +1,4 @@
+// Legacy
 import mqtt from 'mqtt';
 import EventEmitter from 'events';
 

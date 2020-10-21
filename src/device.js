@@ -1,4 +1,5 @@
 import { Animations } from './animations';
+import { Geometries } from './geometries';
 
 export class Device {
   constructor(device_id, sendMsg) {
@@ -11,15 +12,22 @@ export class Device {
     console.log(`Device[${device_id}] -> Initialized!`);
   }
 
+  get geometry() {
+    return this._geometry;
+  }
+
+  sendFrame(frame_data) {
+    this._sendMsg('ff', frame_data);
+  }
+
   ingestDeviceTelemetry(device_telemetry) {
     console.log(device_telemetry);
     const { geometry, geometry_params } = device_telemetry;
 
-    this._geometry = geometry;
+    this._geometry = Geometries[geometry];
 
     if(!this._animation) {
-      this._animation = new Animations[geometry][0](this._sendMsg);
-      console.log(this._animation);
+      this._animation = new Animations[geometry][0](this);
       this._animation.start();
     }
 

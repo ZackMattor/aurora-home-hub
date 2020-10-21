@@ -1,3 +1,5 @@
+// Legacy
+
 import http from 'http';
 import EventEmitter from 'events';
 import { server as WebsocketServer } from 'websocket';

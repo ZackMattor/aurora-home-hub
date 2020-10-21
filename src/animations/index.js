@@ -1,3 +1,5 @@
+// Legacy
+
 import { RainbowScroll } from './rainbow_scroll';
 import { ColorLadder } from './color_ladder';
 import { Snowfall } from './snowfall';

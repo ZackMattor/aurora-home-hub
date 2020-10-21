@@ -1,4 +1,5 @@
 export class Icosahedron {
+  static get led_count() { return 20 }
   static neighbors() {
     return [
       [ 15,  2, 5 ],    // 1
@@ -12,7 +13,7 @@ export class Icosahedron {
       [ 8, 10,  3 ],    // 9
       [ 9, 18,  11 ],   // 10
       [ 4, 10,  12 ],   // 11
-      [ 13,  11,  19 ], // 12 
+      [ 13,  11,  19 ], // 12
       [ 14,  5, 12 ],   // 13
       [ 20,  15,  13 ], // 14
       [ 6, 1, 14 ],     // 15
