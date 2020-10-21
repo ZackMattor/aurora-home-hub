@@ -9,6 +9,7 @@ export class AnimationBase {
     this._frame = [];
     this._count = 0;
     this._device = device;
+    this.fps = FPS;
 
     this.clear();
     this.init();
@@ -20,6 +21,14 @@ export class AnimationBase {
 
   get device() {
     return this._device;
+  }
+
+  get led_count() {
+    return this._led_count;
+  }
+
+  get frame_count() {
+    return this._count;
   }
 
   fill(pixel) {
@@ -43,7 +52,7 @@ export class AnimationBase {
       this.tick();
       this._writeFrame();
       this._count++;
-    }, 1000/FPS);
+    }, 1000/this.fps);
   }
 
   pause() {

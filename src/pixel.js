@@ -72,6 +72,14 @@ export class Pixel {
     return new Pixel(this.r, this.g, this.b);
   }
 
+  setRGB(r, g, b) {
+    this._r = r;
+    this._g = g;
+    this._b = b;
+
+    return this;
+  }
+
   setHSL(h,s,l) {
     let res = hslToRgb(h,s,l);
 
@@ -83,6 +91,7 @@ export class Pixel {
   }
 
   addHSL(addH,addS,addL) {
+    console.log(this.hsl);
     let [h,s,l] = this.hsl;
 
     this.setHSL(h + addH, s + addS, l + addL);
