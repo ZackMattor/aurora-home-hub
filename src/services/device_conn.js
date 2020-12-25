@@ -5,50 +5,63 @@
 // devices emit a device telemetry upon connection and
 // every 10 seconds after that.
 import mqtt from 'mqtt';
+import net from 'net';
 
 export class DeviceConnService {
   constructor(mqqtt_server_url, device_store) {
     this._devices = device_store;
-    this._mqtt_server_url = mqqtt_server_url;
+    //this._mqtt_server_url = mqqtt_server_url;
   }
 
   listen() {
-    console.log(`DeviceConnService -> Connecting to the MQTT server (${this._mqtt_server_url})...`);
-    this.client = mqtt.connect(this._mqtt_server_url);
+    let server = net.createServer((socket) => {
+      console.log('create server callback');
+      //socket.pipe(socket);
 
-    this.client.on('message', this.onMessage.bind(this));
-    this.client.on('reconnect', _ => console.error('DeviceConnService -> Attempting reconnecting...'));
-    this.client.on('connect', _ => {
-      this.client.subscribe('device_telemetry');
-      console.error(`DeviceConnService -> Connected to ${this._mqtt_server_url}...`);
+      socket.on('error', console.error);
+
+      // Handle incoming messages from aurora clients
+      socket.on('data', (data) => {
+        this.onMessage(data, socket);
+      });
     });
-    this.client.on('error', console.error);
+
+    server.listen(1337, '0.0.0.0');
+    console.log('server listening on 1337');
   }
 
-  onMessage(topic, msg) {
-    console.log(`DeviceConnService -> message received! ${topic} | ${msg}`);
+  onMessage(msg, socket) {
+    console.log(`DeviceConnService -> message received! (${msg})`);
 
-    switch(topic) {
+    try {
+      msg = JSON.parse(msg);
+    } catch(e) {
+      console.error('Failed to parse payload...');
+      return;
+    }
+
+    // Debug log for raw socket data
+    //console.log('data!', msg);
+
+    switch(msg.topic) {
     case 'device_telemetry':
-      this.onDeviceTelemetry(msg);
+      this.onDeviceTelemetry(msg.payload, socket);
+      break;
+    default:
+      console.log(`topic isn't implemented (${msg.topic})`);
       break;
     }
   }
 
-  onDeviceTelemetry(telemetry_packet) {
-    try {
-      telemetry_packet = JSON.parse(telemetry_packet);
-    } catch(e) {
-      console.error(e);
-      return;
-    }
+  onDeviceTelemetry(telemetry_packet, socket) {
     let { device_id } = telemetry_packet;
-    this._devices.ingestDeviceTelemetry(telemetry_packet, this.sendMessage.bind(this, device_id));
+    this._devices.ingestDeviceTelemetry(telemetry_packet, this.sendMessage.bind(this, socket));
   }
 
-  sendMessage(device_id, msg_type, packet) {
-    const topic = `${device_id}_${msg_type}`;
+  sendMessage(socket, msg_type, packet) {
+    socket.write(packet);
+    //const topic = `${device_id}_${msg_type}`;
     //console.log(`${topic} ${packet}`)
-    this.client.publish(topic, packet);
+    //this.client.publish(topic, packet);
   }
 }

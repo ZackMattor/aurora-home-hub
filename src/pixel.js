@@ -91,7 +91,6 @@ export class Pixel {
   }
 
   addHSL(addH,addS,addL) {
-    console.log(this.hsl);
     let [h,s,l] = this.hsl;
 
     this.setHSL(h + addH, s + addS, l + addL);

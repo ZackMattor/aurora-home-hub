@@ -9,7 +9,7 @@ export class HueWalker extends AnimationBase {
 
   tick() {
     for(let pixel of this.frame) {
-      pixel.addHSL(0.001, 0, 0);
+      pixel.addHSL(0.0005, 0, 0);
     }
   }
 }
