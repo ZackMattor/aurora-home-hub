@@ -26,7 +26,7 @@ export class Device {
 
   ingestDeviceTelemetry(device_telemetry) {
     console.log(device_telemetry);
-    const { geometry, geometry_params } = device_telemetry;
+    const { geometry/* , geometry_params */ } = device_telemetry;
 
     this._geometry = Geometries[geometry];
 

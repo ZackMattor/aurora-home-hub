@@ -18,4 +18,4 @@ export const Animations = {
   strip: [
     HueWalker
   ]
-}
+};

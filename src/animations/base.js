@@ -64,10 +64,6 @@ export class AnimationBase {
     if(this._interval) clearInterval(this._interval);
   }
 
-  //stop() {
-  //  
-  //}
-
   _writeFrame() {
     this.device.sendFrame(this._render(this.frame));
   }
@@ -84,7 +80,7 @@ export class AnimationBase {
     return this._count;
   }
 
-  _render(frame) {
+  _render() {
     let frame_size = this.frame.length;
     let buffer_size = frame_size * 3;
     let buffer = Buffer.alloc(buffer_size, 0, 'binary');

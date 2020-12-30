@@ -23,7 +23,7 @@ export class SurfaceWalker extends AnimationBase {
 
     console.log(`${this.active_pixel} - ${lightness}`);
     if(lightness > 0.8) {
-      if(this.active_pixel == this.led_count-1) {
+      if(this.active_pixel === this.led_count-1) {
         this.reset();
       } else {
         this.active_pixel++;

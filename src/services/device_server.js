@@ -1,22 +1,18 @@
 // Device Conn[ection] Service
 //
-// We communicate to the devices over the MQTT protocol.
-// This MQTT server is how we send updates to the Aurora
-// devices emit a device telemetry upon connection and
-// every 10 seconds after that.
-import mqtt from 'mqtt';
+// We communicate to the devices over a TCP protocol. This service
+// is the server that listens for connections from devices and then
+// is the layer that communicates with them.
 import net from 'net';
 
 export class DeviceServer {
   constructor(mqqtt_server_url, device_store) {
     this._devices = device_store;
-    //this._mqtt_server_url = mqqtt_server_url;
   }
 
   listen() {
     let server = net.createServer((socket) => {
       console.log('create server callback');
-      //socket.pipe(socket);
 
       socket.on('error', console.error);
 
@@ -35,13 +31,10 @@ export class DeviceServer {
 
     try {
       msg = JSON.parse(msg);
-    } catch(e) {
+    } catch (e) {
       console.error('Failed to parse payload...');
       return;
     }
-
-    // Debug log for raw socket data
-    //console.log('data!', msg);
 
     switch(msg.topic) {
     case 'device_telemetry':
@@ -54,14 +47,10 @@ export class DeviceServer {
   }
 
   onDeviceTelemetry(telemetry_packet, socket) {
-    let { device_id } = telemetry_packet;
     this._devices.ingestDeviceTelemetry(telemetry_packet, this.sendMessage.bind(this, socket));
   }
 
   sendMessage(socket, msg_type, packet) {
     socket.write(packet);
-    //const topic = `${device_id}_${msg_type}`;
-    //console.log(`${topic} ${packet}`)
-    //this.client.publish(topic, packet);
   }
 }
