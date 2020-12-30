@@ -11,7 +11,7 @@ This is a framework for running and managing IOT lighting throughout your home. 
 ## Build Setup
 
 ``` bash
-# Install node V11.X.X (recommend NVM to manage node versions)
+# Install node V13.X.X (recommend NVM to manage node versions)
 
 # install project dependencies
 npm install
