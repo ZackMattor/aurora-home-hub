@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { PassthroughState } from '../animations/passthrough_state';
+import { PassthroughState } from '../animations/passthrough_state.js';
 
 // This is currently a very dumb app server... it is only capable of modify the passthrough state which is the current default for the icosahedron
 

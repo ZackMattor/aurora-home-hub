@@ -1,5 +1,5 @@
-import { AnimationBase } from './base';
-import { Pixel } from '../pixel';
+import { AnimationBase } from './base.js';
+import { Pixel } from '../pixel.js';
 
 //
 // {
