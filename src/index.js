@@ -1,5 +1,5 @@
-import { DeviceConnService } from './services/device_conn';
-import { ServerConnService } from './services/server_conn';
+import { DeviceServer } from './services/device_server';
+import { AppServer } from './services/app_server';
 
 import { DeviceStore } from './stores/device';
 
@@ -7,9 +7,10 @@ const MQTT_SERVER_URL = process.env.MQTT_SERVER_URL || 'mqtt://127.0.0.1';
 const API_KEY = process.env.AURORA_HUB_API_KEY || 'API_KEY';
 const SERVER_URL = process.env.AURORA_SERVER_URL || 'https://aurora.example.com';
 
-const serverConn = new ServerConnService(SERVER_URL, API_KEY);
-const devices = new DeviceStore(serverConn);
-const deviceConn = new DeviceConnService(MQTT_SERVER_URL, devices);
+const deviceStore = new DeviceStore();
 
-deviceConn.listen();
-serverConn.listen();
+const appServer = new AppServer(SERVER_URL, API_KEY);
+const deviceServer = new DeviceServer(MQTT_SERVER_URL, deviceStore);
+
+appServer.listen();
+deviceServer.listen();

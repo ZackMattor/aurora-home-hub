@@ -1,5 +1,5 @@
-import { Animations } from './animations';
-import { Geometries } from './geometries';
+import { Animations } from '../animations';
+import { Geometries } from '../geometries';
 
 export class Device {
   constructor(device_id, sendMsg) {
@@ -8,6 +8,10 @@ export class Device {
     this._last_telemetry = (+new Date);
     this._geometry = null;
     this._animation = null;
+
+    this._animation_state = {
+
+    };
 
     console.log(`Device[${device_id}] -> Initialized!`);
   }

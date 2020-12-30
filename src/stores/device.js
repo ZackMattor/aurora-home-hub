@@ -1,4 +1,4 @@
-import { Device } from '../device.js';
+import { Device } from '../models/device.js';
 
 export class DeviceStore {
   constructor() {

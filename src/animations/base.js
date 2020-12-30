@@ -1,140 +1,103 @@
-import { rgb } from '../color';
+import { Pixel } from '../pixel';
+
+const FPS = 30;
 
 export class AnimationBase {
+  constructor(device) {
+    this._led_count = device.geometry.led_count;
+    this._geometry = device.geometry.name;
+    this._interval = null;
+    this._frame = [];
+    this._count = 0;
+    this._device = device;
+    this.fps = FPS;
+
+    this.clear();
+    this.init();
+  }
+
   init() {
     throw 'Implementation must include a "init" method';
   }
 
-  frame() {
-    throw 'Implementation must include a "frame" method';
+  get device() {
+    return this._device;
   }
 
-  setNormalizedConfig() {
-    throw 'Implementation must include a "setNormalizedConfig" method';
+  get led_count() {
+    return this._led_count;
   }
 
-  constructor(size) {
-    console.log('AnimationBase -> construct');
+  get geometry() {
+    return this._geometry;
+  }
 
-    this.name = this.constructor.name.split(/(?=[A-Z])/).join('_').toLowerCase();
+  get frame_count() {
+    return this._count;
+  }
 
-    // internal variables
-    this.width = size.width;
-    this.height = size.height;
-    this.interval = 1000/20;
+  fill(pixel) {
+    this._frame = [];
 
-    this.canvas = [];
-    this.interval_pointer = null;
-
-    let buffer_size = this.width * this.height * 3;
-    this.buffer = Buffer.alloc(buffer_size, 0, 'binary');
-
-    // initialize the canvas
-    for(let y = 0; y < this.height; y++) {
-      this.canvas[y] = [];
-
-      for(let x = 0; x < this.width; x++) {
-        this.canvas[y][x] = rgb(0,0,0);
-      }
+    for(let i=0; i<this.ledCount; i++) {
+      this._frame.push(pixel.dup());
     }
-  }
-
-  start(frame_cb) {
-    console.log(`Starting the ${this.name} animation`);
-    this.init();
-
-    this.interval_pointer = setInterval(() => {
-      if(frame_cb) frame_cb(this.render());
-    }, this.interval);
-  }
-
-  end() {
-    clearInterval(this.interval_pointer);
-  }
-
-  gradientMapper(colors, value) {
-    // colors - rgb(255,0,0), rgb(0,255,0), 
-    // let resolution = 256;
-    // let max_beta = colors.length * resolution;
-    // let beta = this.map(value, 0, 1024, 0, max_beta);
-
-    let resolution = 1024 / (colors.length-1);
-    let index = parseInt(value / resolution);
-
-    console.log(`index - ${index}`);
-    console.log(`value - ${value}`);
-    console.log(`resolution - ${resolution}`);
-    // console.log(`beta - ${beta}`);
-
-    let color_a = colors[index];
-    let color_b = colors[(index+1) % colors.length];
-
-    // beta - 384
-    // index - 1024
-    let progress = value - resolution;
-    console.log(`progress - ${progress}`);
-
-    // let r = this.map(value, index*resolution, ( index+1 )*resolution, color_a.r, color_b.r);
-    // let g = this.map(value, index*resolution, ( index+1 )*resolution, color_a.g, color_b.g);
-    // let b = this.map(value, index*resolution, ( index+1 )*resolution, color_a.b, color_b.b);
-    let r = this.map(progress, 0, resolution, color_a.r, color_b.r);
-    let g = this.map(progress, 0, resolution, color_a.g, color_b.g);
-    let b = this.map(progress, 0, resolution, color_a.b, color_b.b);
-
-    return rgb(r, g, b);
-  }
-
-  eachPixel(cb) {
-    for(var y=0; y<this.height; y++) {
-      for(var x=0; x<this.width; x++) {
-        cb(x,y);
-      }
-    }
-  }
-
-  fill(color) {
-    this.eachPixel((x, y) => {
-      this.setPixel(x,y,color);
-    });
   }
 
   clear() {
-    this.fill(rgb(0,0,0));
-  }
+    this._frame = [];
 
-  setPixel(x, y, color) {
-    if( x >= 0 && y >= 0 &&
-        x < this.width && y < this.height ) {
-      this.canvas[y][x] = color;
-    } else {
-      console.log(`(${x},${y}) is out of bounds!`);
+    for(let i=0; i<this.ledCount; i++) {
+      this._frame.push(new Pixel());
     }
   }
 
-  render() {
-    this.frame();
+  start() {
+    this._interval = setInterval(() => {
+      this.tick();
+      this._writeFrame();
+      this._count++;
+    }, 1000/this.fps);
+  }
 
-    for(var y=0; y<this.height; y++) {
-      for(var x=0; x<this.width; x++) {
-        let h = y * this.width;
-        let index = 3*(h+x);
-        let color = this.canvas[y][x];
+  pause() {
+    if(this._interval) clearInterval(this._interval);
+  }
 
-        let brightness = this.config.brightness / 100;
-        this.buffer[index+0] = color.r * brightness;
-        this.buffer[index+1] = color.g * brightness;
-        this.buffer[index+2] = color.b * brightness;
-      }
+  //stop() {
+  //  
+  //}
+
+  _writeFrame() {
+    this.device.sendFrame(this._render(this.frame));
+  }
+
+  get ledCount() {
+    return this._led_count;
+  }
+
+  get frame() {
+    return this._frame;
+  }
+
+  get count() {
+    return this._count;
+  }
+
+  _render(frame) {
+    let frame_size = this.frame.length;
+    let buffer_size = frame_size * 3;
+    let buffer = Buffer.alloc(buffer_size, 0, 'binary');
+
+    for(let y=0; y<frame_size; y++) {
+      let index = y*3;
+      let pixel = this.frame[y];
+
+      buffer[index+0] = pixel.r;
+      buffer[index+1] = pixel.g;
+      buffer[index+2] = pixel.b;
     }
 
-    return this.buffer;
-  }
-
-  config_map(value, min, max) {
-    return this.map(value, 0, 100, min, max);
-  }
-
-  map(value, from_min, from_max, to_min, to_max) {
-    return to_min + (to_max - to_min) * (value - from_min) / from_max;
+    return buffer;
   }
 }

@@ -1,4 +1,5 @@
 export class Icosahedron {
+  static get name() { return 'icosahedron'; }
   static get led_count() { return 20; }
   static neighbors() {
     return [

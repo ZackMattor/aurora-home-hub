@@ -7,7 +7,7 @@
 import mqtt from 'mqtt';
 import net from 'net';
 
-export class DeviceConnService {
+export class DeviceServer {
   constructor(mqqtt_server_url, device_store) {
     this._devices = device_store;
     //this._mqtt_server_url = mqqtt_server_url;
