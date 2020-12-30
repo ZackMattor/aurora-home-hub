@@ -1,17 +1,16 @@
 {
   "name": "shelfio",
   "version": "1.0.0",
+  "type": "module",
   "description": "shelfio",
   "author": "Zack Mattor <zmattor@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "node --require esm src/index.js",
-    "test": "nyc mocha --require esm",
+    "start": "node src/index.js",
     "lint": "eslint src/**"
   },
   "dependencies": {
     "dotenv": "^7.0.0",
-    "esm": "^3.2.16",
     "ws": "^7.4.2"
   },
   "engines": {

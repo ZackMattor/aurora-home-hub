@@ -1,5 +1,5 @@
-import { Animations } from '../animations';
-import { Geometries } from '../geometries';
+import { Animations } from '../animations.js';
+import { Geometries } from '../geometries.js';
 
 export class Device {
   constructor(device_id, sendMsg) {

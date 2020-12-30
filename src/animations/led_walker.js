@@ -1,6 +1,6 @@
 // This animation is for a sphereoid
-import { AnimationBase } from './base';
-import { Pixel } from '../pixel';
+import { AnimationBase } from './base.js';
+import { Pixel } from '../pixel.js';
 
 export class LedWalker extends AnimationBase {
   init() {
