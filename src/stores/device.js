@@ -11,9 +11,11 @@ export class DeviceStore {
 
     if(!device) {
       // Register device in the store
-      device = new Device(device_id, sendMsg);
+      device = new Device(device_id);
       this._devices[device_id] = device;
     }
+
+    device.sendMsg = sendMsg;
 
     device.ingestDeviceTelemetry(telemetry_packet);
   }

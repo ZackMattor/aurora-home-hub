@@ -12,7 +12,7 @@ export class DeviceServer {
 
   listen() {
     let server = net.createServer((socket) => {
-      console.log('create server callback');
+      console.log('Client Connected!');
 
       socket.on('error', console.error);
 

@@ -2,9 +2,9 @@ import { Animations } from '../animations.js';
 import { Geometries } from '../geometries.js';
 
 export class Device {
-  constructor(device_id, sendMsg) {
+  constructor(device_id) {
     this._id = device_id;
-    this._sendMsg = sendMsg;
+    this._sendMsg = () => {};
     this._last_telemetry = (+new Date);
     this._geometry = null;
     this._animation = null;
@@ -14,6 +14,10 @@ export class Device {
     };
 
     console.log(`Device[${device_id}] -> Initialized!`);
+  }
+
+  set sendMsg(val) {
+    this._sendMsg = val;
   }
 
   get geometry() {
