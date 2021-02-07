@@ -11,6 +11,10 @@ export const Animations = {
     LedWalker,
   ],
 
+  shard: [
+    HueWalker
+  ],
+
   grid: [
     HueWalker
   ],
