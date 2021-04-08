@@ -5,8 +5,8 @@ import { PassthroughState } from './animations/passthrough_state.js';
 
 export const Animations = {
   icosahedron: [
-    PassthroughState,
     HueWalker,
+    PassthroughState,
     SurfaceWalker,
     LedWalker,
   ],
