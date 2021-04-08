@@ -25,11 +25,10 @@ export class Device {
   }
 
   sendFrame(frame_data) {
-    this._sendMsg('ff', frame_data);
+    this._sendMsg(frame_data);
   }
 
   ingestDeviceTelemetry(device_telemetry) {
-    console.log(device_telemetry);
     const { geometry/* , geometry_params */ } = device_telemetry;
 
     this._geometry = Geometries[geometry];

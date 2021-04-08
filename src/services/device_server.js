@@ -12,7 +12,7 @@ export class DeviceServer {
 
   listen() {
     let server = net.createServer((socket) => {
-      console.log('Client Connected!');
+      console.log('Client Connected!', socket.remoteAddress);
 
       socket.on('error', console.error);
 
@@ -50,7 +50,7 @@ export class DeviceServer {
     this._devices.ingestDeviceTelemetry(telemetry_packet, this.sendMessage.bind(this, socket));
   }
 
-  sendMessage(socket, msg_type, packet) {
+  sendMessage(socket, packet) {
     socket.write(packet);
   }
 }
