@@ -92,9 +92,9 @@ export class AnimationBase {
       // When sent over the wire we reserve "0" for
       // the start of a packet. In the firmware if a
       // color is set to "1" we turn off the light.
-      buffer[index+0] = pixel.r == 0 ? 1 : pixel.r;
-      buffer[index+1] = pixel.g == 0 ? 1 : pixel.g;
-      buffer[index+2] = pixel.b == 0 ? 1 : pixel.b;
+      buffer[index+0] = pixel.r === 0 ? 1 : pixel.r;
+      buffer[index+1] = pixel.g === 0 ? 1 : pixel.g;
+      buffer[index+2] = pixel.b === 0 ? 1 : pixel.b;
 
     }
 
