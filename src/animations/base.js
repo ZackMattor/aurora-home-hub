@@ -61,9 +61,9 @@ export class AnimationBase {
     if(name in this.config) {
       this._config[name] = val;
       return true;
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   generateConfig() {
@@ -136,7 +136,7 @@ export class AnimationBase {
       buffer[index+1] = g === 0 ? 1 : g;
       buffer[index+2] = b === 0 ? 1 : b;
 
-      //process.stdout.write(`(${buffer[index+0]},${buffer[index+1]},${buffer[index+2]})`);
+      // process.stdout.write(`(${buffer[index+0]},${buffer[index+1]},${buffer[index+2]})`);
     }
 
     return buffer;

@@ -8,6 +8,6 @@ export class AbstractStore {
   }
 
   serialize() {
-    return Object.values(this._items).map(i => { return i.serialize() });
+    return Object.values(this._items).map(i => i.serialize());
   }
 }

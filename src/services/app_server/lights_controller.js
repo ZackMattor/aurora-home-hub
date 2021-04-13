@@ -6,7 +6,7 @@ export function lightsController(devices) {
 
   const findResource = (req, res, next) => {
     let light = devices.find(req.params.lightId);
-    let animation = light?.animation;
+    let animation = light && light.animation;
 
     if(light && animation) {
       req.light = light;

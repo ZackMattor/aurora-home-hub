@@ -23,7 +23,7 @@ export class AppServer {
       console.log(`HTTP App server listening on port ${port}`);
     });
 
-    app.use("/api", [lightsController(this.devices)]);
+    app.use('/api', [lightsController(this.devices)]);
   }
 
   listen_stream() {
