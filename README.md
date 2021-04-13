@@ -15,26 +15,20 @@ https://imgur.com/gallery/hAcF4hQ
 ## Bill of Materials
  - [ESP32](https://www.adafruit.com/product/3269)
  - [neopixels](https://www.adafruit.com/category/168)
- - wire
- - 5v Source
- - logic converters
 
-## Build Setup
+## Getting Started
 
 ``` bash
 # Install node V15.X.X (recommend NVM to manage node versions)
+nvm install 15
 
-# install project dependencies
 npm install
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# before pushing run `npm run lint`
+npm start
 ```
 
-## Environment Variables
-
+## API
 ```
-MQTT_ENDPOINT | mqtt://localhost:1883
+[GET] /api/lights
+[GET] /api/lights/{lightId}/animation
+[PATCH] /api/lights/{lightId}/animation
 ```
