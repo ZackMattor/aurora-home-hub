@@ -128,9 +128,13 @@ export class AnimationBase {
       // When sent over the wire we reserve "0" for
       // the start of a packet. In the firmware if a
       // color is set to "1" we turn off the light.
-      buffer[index+0] = pixel.r === 0 ? 1 : pixel.r * this.config.brightness;
-      buffer[index+1] = pixel.g === 0 ? 1 : pixel.g * this.config.brightness;
-      buffer[index+2] = pixel.b === 0 ? 1 : pixel.b * this.config.brightness;
+      let r = Math.floor(pixel.r * this.config.brightness);
+      let g = Math.floor(pixel.g * this.config.brightness);
+      let b = Math.floor(pixel.b * this.config.brightness);
+
+      buffer[index+0] = r === 0 ? 1 : r;
+      buffer[index+1] = g === 0 ? 1 : g;
+      buffer[index+2] = b === 0 ? 1 : b;
 
       //process.stdout.write(`(${buffer[index+0]},${buffer[index+1]},${buffer[index+2]})`);
     }
