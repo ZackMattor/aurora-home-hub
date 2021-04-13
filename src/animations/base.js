@@ -10,6 +10,7 @@ export class AnimationBase {
     this._frame = [];
     this._count = 0;
     this._device = device;
+    this._config = this.generateConfig();
     this.fps = FPS;
 
     this.clear();
@@ -18,6 +19,26 @@ export class AnimationBase {
 
   init() {
     throw 'Implementation must include a "init" method';
+  }
+
+  configSchema() {
+    return {};
+  }
+
+  serialize() {
+    return {
+      id: this.name,
+      light_id: this.device.id,
+      config: this.config,
+    };
+  }
+
+  get config() {
+    return this._config;
+  }
+
+  get name() {
+    return this.constructor.name;
   }
 
   get device() {
@@ -34,6 +55,21 @@ export class AnimationBase {
 
   get frame_count() {
     return this._count;
+  }
+
+  setConfig(name, val) {
+    if(name in this.config) {
+      this._config[name] = val;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  generateConfig() {
+    return Object.assign({
+      brightness: 1
+    }, this.configSchema());
   }
 
   fill(pixel) {
@@ -92,10 +128,11 @@ export class AnimationBase {
       // When sent over the wire we reserve "0" for
       // the start of a packet. In the firmware if a
       // color is set to "1" we turn off the light.
-      buffer[index+0] = pixel.r === 0 ? 1 : pixel.r;
-      buffer[index+1] = pixel.g === 0 ? 1 : pixel.g;
-      buffer[index+2] = pixel.b === 0 ? 1 : pixel.b;
+      buffer[index+0] = pixel.r === 0 ? 1 : pixel.r * this.config.brightness;
+      buffer[index+1] = pixel.g === 0 ? 1 : pixel.g * this.config.brightness;
+      buffer[index+2] = pixel.b === 0 ? 1 : pixel.b * this.config.brightness;
 
+      //process.stdout.write(`(${buffer[index+0]},${buffer[index+1]},${buffer[index+2]})`);
     }
 
     return buffer;

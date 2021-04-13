@@ -6,6 +6,7 @@ export class Device {
     this._id = device_id;
     this._sendMsg = () => {};
     this._last_telemetry = (+new Date);
+    this._connected_at = (+new Date);
     this._geometry = null;
     this._animation = null;
 
@@ -16,12 +17,26 @@ export class Device {
     console.log(`Device[${device_id}] -> Initialized!`);
   }
 
+  serialize() {
+    return {
+      id: this._id,
+      last_telemetry: this._last_telemetry,
+      connected_at: this._connected_at,
+      geometry_name: this._geometry?.name,
+      current_animation_name: this._animation?.name,
+    };
+  }
+
   set sendMsg(val) {
     this._sendMsg = val;
   }
 
   get geometry() {
     return this._geometry;
+  }
+
+  get animation() {
+    return this._animation;
   }
 
   sendFrame(frame_data) {

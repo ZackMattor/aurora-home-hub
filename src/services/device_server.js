@@ -6,7 +6,7 @@
 import net from 'net';
 
 export class DeviceServer {
-  constructor(mqqtt_server_url, device_store) {
+  constructor(device_store) {
     this._devices = device_store;
   }
 
