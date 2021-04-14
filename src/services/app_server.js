@@ -1,13 +1,32 @@
 import WebSocket from 'ws';
 import { PassthroughState } from '../animations/passthrough_state.js';
+import express from 'express';
+import { lightsController } from './app_server/lights_controller.js';
 
 // This is currently a very dumb app server... it is only capable of modify the passthrough state which is the current default for the icosahedron
 
 export class AppServer {
-  constructor() {
+  constructor(device_store) {
+    this.devices = device_store;
   }
 
   listen() {
+    this.listen_http();
+    this.listen_stream();
+  }
+
+  listen_http() {
+    const port = 8080;
+    const app = express();
+
+    app.listen(port, () => {
+      console.log(`HTTP App server listening on port ${port}`);
+    });
+
+    app.use('/api', [lightsController(this.devices)]);
+  }
+
+  listen_stream() {
     const wss = new WebSocket.Server({ port: 1338 });
 
     wss.on('connection', (ws) => {

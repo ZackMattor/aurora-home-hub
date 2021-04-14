@@ -8,9 +8,15 @@ export class HueWalker extends AnimationBase {
     }
   }
 
+  configSchema() {
+    return {
+      hue_velocity: 0.005
+    };
+  }
+
   tick() {
     for(let pixel of this.frame) {
-      pixel.addHSL(0.005, 0, 0);
+      pixel.addHSL(this.config.hue_velocity, 0, 0);
     }
   }
 }
