@@ -3,16 +3,15 @@ import { AbstractStore } from './abstract_store.js';
 
 export class DeviceStore extends AbstractStore {
   ingestDeviceTelemetry(telemetry_packet, sendMsg) {
-    let { device_id } = telemetry_packet;
+    let { device_id, geometry } = telemetry_packet;
     let device = this._items[device_id];
 
     if(!device) {
-      // Register device in the store
-      device = new Device(device_id);
-      this._items[device_id] = device;
+      device = this.add(new Device(device_id, {
+        sendMsg: sendMsg,
+        geometry_name: geometry,
+      }));
     }
-
-    device.sendMsg = sendMsg;
 
     device.ingestDeviceTelemetry(telemetry_packet);
   }

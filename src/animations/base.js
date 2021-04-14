@@ -72,6 +72,22 @@ export class AnimationBase {
     }, this.configSchema());
   }
 
+  start() {
+    console.log(`Animation[${this.name}] -> Started for ${this.device.id}`);
+
+    this._interval = setInterval(() => {
+      this.tick();
+      this._writeFrame();
+      this._count++;
+    }, 1000/this.fps);
+  }
+
+  stop() {
+    console.log(`Animation[${this.name}] -> Stopped for ${this.device.id}`);
+
+    if(this._interval) clearInterval(this._interval);
+  }
+
   fill(pixel) {
     this._frame = [];
 
@@ -86,18 +102,6 @@ export class AnimationBase {
     for(let i=0; i<this.ledCount; i++) {
       this._frame.push(new Pixel());
     }
-  }
-
-  start() {
-    this._interval = setInterval(() => {
-      this.tick();
-      this._writeFrame();
-      this._count++;
-    }, 1000/this.fps);
-  }
-
-  pause() {
-    if(this._interval) clearInterval(this._interval);
   }
 
   _writeFrame() {

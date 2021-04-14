@@ -2,19 +2,27 @@ import { Animations } from '../animations.js';
 import { Geometries } from '../geometries.js';
 
 export class Device {
-  constructor(device_id) {
+  constructor(device_id, params) {
+    console.log(`Device[${device_id}] -> Created!`);
+
+    let {
+      sendMsg,
+      geometry_name
+    } = params;
+
     this._id = device_id;
-    this._sendMsg = () => {};
-    this._last_telemetry = (+new Date);
-    this._connected_at = (+new Date);
-    this._geometry = null;
+    this._sendMsg = sendMsg;
+    this._geometry = Geometries[geometry_name];
     this._animation = null;
 
-    this._animation_state = {
+    this._last_telemetry = (+new Date);
+    this._connected_at = (+new Date);
 
-    };
-
-    console.log(`Device[${device_id}] -> Initialized!`);
+    if(this.geometry) {
+      this.setAnimation('HueWalker');
+    } else {
+      console.error(`Device[${this.id}] -> Invalid geometry (${th})`);
+    }
   }
 
   serialize() {
@@ -39,19 +47,17 @@ export class Device {
     return this._animation;
   }
 
+  setAnimation(name) {
+    this._animation = new Animations[name](this);
+    this._animation.start();
+  }
+
   sendFrame(frame_data) {
     this._sendMsg(frame_data);
   }
 
-  ingestDeviceTelemetry(device_telemetry) {
-    const { geometry/* , geometry_params */ } = device_telemetry;
-
-    this._geometry = Geometries[geometry];
-
-    if(!this._animation) {
-      this._animation = new Animations[geometry][0](this);
-      this._animation.start();
-    }
+  ingestDeviceTelemetry(_device_telemetry) {
+    // const { _ } = device_telemetry;
 
     this._last_telemetry = (+new Date);
   }

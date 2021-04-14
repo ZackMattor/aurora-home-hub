@@ -28,6 +28,17 @@ export function lightsController(devices) {
     res.json(req.animation.serialize());
   });
 
+  router.post('/lights/:lightId/animation', findResource, (req, res) => {
+    const conf = req.body.config || {};
+    console.log(conf);
+
+    for(const key in conf) {
+      req.animation.setConfig(key, conf[key]);
+    }
+
+    res.json(req.animation.serialize());
+  });
+
   router.patch('/lights/:lightId/animation', findResource, (req, res) => {
     const conf = req.body.config || {};
     console.log(conf);
