@@ -6,12 +6,11 @@ export class Device {
     console.log(`Device[${device_id}] -> Created!`);
 
     let {
-      sendMsg,
       geometry_name
     } = params;
 
     this._id = device_id;
-    this._sendMsg = sendMsg;
+    this._sendMsg = () => {};
     this._geometry = Geometries[geometry_name];
     this._animation = null;
 

@@ -4,8 +4,8 @@ import { HueWalker } from './animations/hue_walker.js';
 import { PassthroughState } from './animations/passthrough_state.js';
 
 export const Animations = {
-  HueWalker, 
-  SurfaceWalker,
   HueWalker,
+  SurfaceWalker,
+  LedWalker,
   PassthroughState,
 };

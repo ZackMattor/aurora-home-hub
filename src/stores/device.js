@@ -8,10 +8,11 @@ export class DeviceStore extends AbstractStore {
 
     if(!device) {
       device = this.add(new Device(device_id, {
-        sendMsg: sendMsg,
         geometry_name: geometry,
       }));
     }
+
+    device.sendMsg = sendMsg;
 
     device.ingestDeviceTelemetry(telemetry_packet);
   }
