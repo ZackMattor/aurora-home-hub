@@ -4,22 +4,8 @@ import { HueWalker } from './animations/hue_walker.js';
 import { PassthroughState } from './animations/passthrough_state.js';
 
 export const Animations = {
-  icosahedron: [
-    HueWalker,
-    PassthroughState,
-    SurfaceWalker,
-    LedWalker,
-  ],
-
-  shard: [
-    HueWalker
-  ],
-
-  grid: [
-    HueWalker
-  ],
-
-  strip: [
-    HueWalker
-  ]
+  HueWalker,
+  SurfaceWalker,
+  LedWalker,
+  PassthroughState,
 };

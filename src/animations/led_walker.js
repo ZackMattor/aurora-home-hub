@@ -4,7 +4,6 @@ import { Pixel } from '../pixel.js';
 
 export class LedWalker extends AnimationBase {
   init() {
-    this.fps = 40;
     this.active_pixel = 0;
     this.fill((new Pixel()).setRGB(0,0,0));
   }

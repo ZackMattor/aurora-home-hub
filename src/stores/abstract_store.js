@@ -3,6 +3,12 @@ export class AbstractStore {
     this._items = {};
   }
 
+  add(item) {
+    this._items[item.id] = item;
+
+    return item;
+  }
+
   find(id) {
     return this._items[id];
   }
