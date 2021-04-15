@@ -17,9 +17,7 @@ export class AnimationBase {
     this.init();
   }
 
-  init() {
-    throw 'Implementation must include a "init" method';
-  }
+  init() { }
 
   configSchema() {
     return {};
