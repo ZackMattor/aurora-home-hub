@@ -20,7 +20,7 @@ export class Device {
     if(this.geometry) {
       this.setAnimation('HueWalker');
     } else {
-      console.error(`Device[${this.id}] -> Invalid geometry (${th})`);
+      console.error(`Device[${this.id}] -> Invalid geometry (${geometry_name})`);
     }
   }
 
@@ -30,7 +30,7 @@ export class Device {
       last_telemetry: this._last_telemetry,
       connected_at: this._connected_at,
       geometry_name: this._geometry?.name,
-      current_animation_name: this._animation?.name,
+      animation_name: this._animation?.name,
     };
   }
 
@@ -47,15 +47,19 @@ export class Device {
   }
 
   setAnimation(name) {
+    if(this.animation) {
+      this.animation.stop();
+    }
+
     this._animation = new Animations[name](this);
-    this._animation.start();
+    this.animation.start();
   }
 
   sendFrame(frame_data) {
     this._sendMsg(frame_data);
   }
 
-  ingestDeviceTelemetry(_device_telemetry) {
+  ingestDeviceTelemetry( /* device_telemetry */ ) {
     // const { _ } = device_telemetry;
 
     this._last_telemetry = (+new Date);

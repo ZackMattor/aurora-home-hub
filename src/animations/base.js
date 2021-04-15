@@ -63,6 +63,7 @@ export class AnimationBase {
       return true;
     }
 
+    console.error(`Animation[${this.name}] -> Invalid config key ${name} for ${this.device.id}`);
     return false;
   }
 

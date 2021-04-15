@@ -10,12 +10,29 @@ export function lightsController(devices) {
 
     if(light && animation) {
       req.light = light;
-      req.animation = animation;
-
       next();
     } else {
       res.sendStatus(404);
     }
+  };
+
+  const requireAttrs = (...attrs) => {
+    return (req, res, next) => {
+      let errors = [];
+
+      for(const attr of attrs) {
+        if(typeof req.body[attr] === 'undefined') {
+          errors.push(attr);
+        }
+      }
+
+      if(errors.length === 0) {
+        next();
+      } else {
+        console.error('Missing required attrs... ', errors);
+        res.sendStatus(422);
+      }
+    };
   };
 
   router.use(bodyParser.json());
@@ -25,32 +42,39 @@ export function lightsController(devices) {
   });
 
   router.get('/lights/:lightId/animation', findResource, (req, res) => {
-    res.json(req.animation.serialize());
+    res.json(req.light.animation.serialize());
   });
 
-  router.post('/lights/:lightId/animation', findResource, (req, res) => {
-    const conf = req.body.config || {};
-    console.log(conf);
+  // Start a new animation
+  router.post('/lights/:lightId/animation', requireAttrs('id'), findResource, (req, res) => {
+    let {
+      config,
+      id
+    } = ( req.body || {} );
 
-    for(const key in conf) {
-      req.animation.setConfig(key, conf[key]);
+    config = config || {};
+
+    req.light.setAnimation(id);
+    console.log(config);
+
+    for(const key in config) {
+      req.light.animation.setConfig(key, config[key]);
     }
 
-    res.json(req.animation.serialize());
+    res.json(req.light.animation.serialize());
   });
 
+  // Update an existing running animation
   router.patch('/lights/:lightId/animation', findResource, (req, res) => {
-    const conf = req.body.config || {};
-    console.log(conf);
+    const config = req.body.config || {};
+    console.log(config);
 
-    for(const key in conf) {
-      req.animation.setConfig(key, conf[key]);
+    for(const key in config) {
+      req.light.animation.setConfig(key, config[key]);
     }
 
-    res.json(req.animation.serialize());
+    res.json(req.light.animation.serialize());
   });
 
   return router;
 }
-
-
