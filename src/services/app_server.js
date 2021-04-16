@@ -1,6 +1,8 @@
 import WebSocket from 'ws';
-import { PassthroughState } from '../animations/passthrough_state.js';
 import express from 'express';
+import cors from 'cors';
+
+import { PassthroughState } from '../animations/passthrough_state.js';
 import { lightsController } from './app_server/lights_controller.js';
 
 // This is currently a very dumb app server... it is only capable of modify the passthrough state which is the current default for the icosahedron
@@ -18,6 +20,7 @@ export class AppServer {
   listen_http() {
     const port = 8080;
     const app = express();
+    app.use(cors());
 
     app.listen(port, () => {
       console.log(`HTTP App server listening on port ${port}`);
