@@ -10,7 +10,7 @@ export const Animations = {
       return {
         id: i.name,
         config: i.configSchema()
-      }
+      };
     });
   },
 
