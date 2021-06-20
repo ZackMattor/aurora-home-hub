@@ -2,7 +2,7 @@ import { AnimationBase } from './base.js';
 import { Pixel } from '../pixel.js';
 
 export class RawColor extends AnimationBase {
-  configSchema() {
+  static configSchema() {
     return {
       r: 1,
       g: 1,

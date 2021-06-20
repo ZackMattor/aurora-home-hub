@@ -5,9 +5,24 @@ import { HueWalker } from './animations/hue_walker.js';
 import { PassthroughState } from './animations/passthrough_state.js';
 
 export const Animations = {
-  HueWalker,
-  SurfaceWalker,
-  LedWalker,
-  PassthroughState,
-  RawColor,
+  serialize() {
+    return Object.values(this.items).map((i) => {
+      return {
+        id: i.name,
+        config: i.configSchema()
+      }
+    });
+  },
+
+  find(id) {
+    return this.items[id];
+  },
+
+  items: {
+    HueWalker,
+    SurfaceWalker,
+    LedWalker,
+    PassthroughState,
+    RawColor,
+  }
 };
