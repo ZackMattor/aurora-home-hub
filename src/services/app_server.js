@@ -1,15 +1,20 @@
 import WebSocket from 'ws';
 import express from 'express';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 
 import { PassthroughState } from '../animations/passthrough_state.js';
-import { lightsController } from './app_server/lights_controller.js';
+
+import { LightsController } from './app_server/lights_controller.js';
+import { AnimationsController } from './app_server/animations_controller.js';
 
 // This is currently a very dumb app server... it is only capable of modify the passthrough state which is the current default for the icosahedron
 
 export class AppServer {
   constructor(device_store) {
     this.devices = device_store;
+    this.swaggerDocument = YAML.load('./src/services/app_server/swagger.yaml');
   }
 
   listen() {
@@ -26,7 +31,8 @@ export class AppServer {
       console.log(`HTTP App server listening on port ${port}`);
     });
 
-    app.use('/api', [lightsController(this.devices)]);
+    app.use('/api/v1', [AnimationsController(), LightsController(this.devices)]);
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(this.swaggerDocument));
   }
 
   listen_stream() {

@@ -19,7 +19,7 @@ export class AnimationBase {
 
   init() { }
 
-  configSchema() {
+  static configSchema() {
     return {};
   }
 
@@ -68,7 +68,7 @@ export class AnimationBase {
   generateConfig() {
     return Object.assign({
       brightness: 1
-    }, this.configSchema());
+    }, this.constructor.configSchema());
   }
 
   start() {

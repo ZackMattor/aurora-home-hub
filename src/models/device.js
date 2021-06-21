@@ -51,8 +51,9 @@ export class Device {
       this.animation.stop();
     }
 
-    this._animation = new Animations[name](this);
+    this._animation = new (Animations.find(name))(this);
     this.animation.start();
+    console.log('Starting animation', name);
   }
 
   sendFrame(frame_data) {

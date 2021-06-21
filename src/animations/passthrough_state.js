@@ -10,7 +10,6 @@ let saved_state = {
   icosahedron: []
 };
 
-
 for(let i=0; i<20; i++) {
   // default to white
   saved_state.icosahedron.push(new Pixel(255,255,255));

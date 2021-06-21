@@ -8,7 +8,7 @@ export class HueWalker extends AnimationBase {
     }
   }
 
-  configSchema() {
+  static configSchema() {
     return {
       hue_velocity: 0.005
     };

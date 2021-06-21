@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import bodyParser from 'body-parser';
 
-export function lightsController(devices) {
+export function LightsController(devices) {
   const router = Router();
 
   const findResource = (req, res, next) => {
@@ -40,6 +40,11 @@ export function lightsController(devices) {
   router.get('/lights', (req, res) => {
     res.json(devices.serialize());
   });
+
+  router.get('/lights/:lightId', findResource, (req, res) => {
+    res.json(req.light.serialize());
+  });
+
 
   router.get('/lights/:lightId/animation', findResource, (req, res) => {
     res.json(req.light.animation.serialize());
