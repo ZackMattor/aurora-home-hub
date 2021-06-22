@@ -16,11 +16,27 @@ paths:
           description: A JSON array of lights
           content:
             application/json:
-              schema: 
-                # TODO - use refs for actual schemas
-                type: array
-                items: 
-                  type: string
+              schema:
+                $ref: '#/components/schemas/Light'
+  /lights/{lightId}:
+    get:
+      summary: Returns a light.
+      description: Retuns a light that is active on the network.
+      parameters:
+        - name: lightId
+          in: path
+          description: Light ID
+          required: true
+          schema:
+            type: string
+            format: MacAddress
+      responses:
+        '200':    # status code
+          description: A JSON array of lights
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Light'
   /animations:
     get:
       summary: Returns a list of available animations.
@@ -30,8 +46,78 @@ paths:
           description: A JSON array of animations
           content:
             application/json:
-              schema: 
-                # TODO - use refs for actual schemas
-                type: array
-                items: 
-                  type: string
+              schema:
+                $ref: '#/components/schemas/Animation'
+  /lights/{lightId}/animation:
+    get:
+      summary: Returns current animation parameters for a given light.
+      description: Returns the currently set animation and animation parameters for a given active light.
+      parameters:
+        - name: lightId
+          in: path
+          description: Light ID
+          required: true
+          schema:
+            type: string
+            format: MacAddress
+      responses:
+        '200':    # status code
+          description: A JSON array of animations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentAnimation'
+    post:
+      summary: Sets the animation for a given light.
+      description: Allows you to set a given animation and configure parameters that are specific to that given animation. You can use the [GET] /animations route to see what parameters are configurable for a given animation.
+      parameters:
+        - name: lightId
+          in: path
+          description: Light ID
+          required: true
+          schema:
+            type: string
+            format: MacAddress
+      requestBody:
+        description: The body describes the animation that we want to set on the Light. The id should be an Animation ID, and the config should be the parameters used to configure the given animation.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrentAnimation'
+      responses:
+        '200':    # status code
+          description: A JSON array of animations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentAnimation'
+components:
+  schemas:
+    Light:
+      properties:
+        id:
+          type: string
+        last_telemetry:
+          type: integer
+        connected_at:
+          type: integer
+        geometry_name:
+          type: string
+        animation_name:
+          type: string
+    Animation:
+      properties:
+        id:
+          type: string
+        config:
+          type: object
+    CurrentAnimation:
+      properties:
+        id:
+          type: string
+        light_id:
+          type: string
+          readOnly: true
+        config:
+          type: object
