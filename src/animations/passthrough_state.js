@@ -3,7 +3,7 @@ import { Pixel } from '../pixel.js';
 
 export class PassthroughState extends AnimationBase {
   init() {
-    this.setConfig('pixel_state', [...(new Array(5))].map(_ => {
+    this.setConfig('pixel_state', [...(new Array(5))].map(() => {
       return (new Pixel()).serialize();
     }));
   }

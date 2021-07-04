@@ -4,8 +4,6 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 
-import { PassthroughState } from '../animations/passthrough_state.js';
-
 import { LightsController } from './app_server/lights_controller.js';
 import { AnimationsController } from './app_server/animations_controller.js';
 
