@@ -68,6 +68,14 @@ export class Pixel {
     this._b = b;
   }
 
+  static random() {
+    return (new Pixel()).random();
+  }
+
+  random() {
+    this.setHSL(Math.random(), 1, 0.5);
+  }
+
   dup() {
     return new Pixel(this.r, this.g, this.b);
   }
@@ -112,5 +120,13 @@ export class Pixel {
 
   get b() {
     return this._b;
+  }
+
+  serialize() {
+    return {
+      r: this.r,
+      g: this.g,
+      b: this.b
+    };
   }
 }

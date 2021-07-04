@@ -44,7 +44,11 @@ export class AppServer {
       ws.on('message', (message) => {
         let data = JSON.parse(message);
 
-        PassthroughState.setState('icosahedron', data);
+        let light = this.devices.find(data.light_id);
+
+        if(light) {
+          light.animation.setConfig('pixel_state', data.pixel_state);
+        }
       });
     });
   }

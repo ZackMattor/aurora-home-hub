@@ -10,7 +10,7 @@ export class AnimationBase {
     this._frame = [];
     this._count = 0;
     this._device = device;
-    this._config = this.generateConfig();
+    this._config = Object.assign({}, this.generateConfig());
     this.fps = FPS;
 
     this.clear();
