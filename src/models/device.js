@@ -18,7 +18,7 @@ export class Device {
     this._connected_at = (+new Date);
 
     if(this.geometry) {
-      this.setAnimation('LedWalker');
+      this.setAnimation('HueWalker');
     } else {
       console.error(`Device[${this.id}] -> Invalid geometry (${geometry_name})`);
     }
