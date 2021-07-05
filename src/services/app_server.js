@@ -4,8 +4,6 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 
-import { PassthroughState } from '../animations/passthrough_state.js';
-
 import { LightsController } from './app_server/lights_controller.js';
 import { AnimationsController } from './app_server/animations_controller.js';
 
@@ -44,7 +42,11 @@ export class AppServer {
       ws.on('message', (message) => {
         let data = JSON.parse(message);
 
-        PassthroughState.setState('icosahedron', data);
+        let light = this.devices.find(data.light_id);
+
+        if(light) {
+          light.animation.setConfig('pixel_state', data.pixel_state);
+        }
       });
     });
   }

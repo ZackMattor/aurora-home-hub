@@ -10,13 +10,13 @@ export class LedWalker extends AnimationBase {
 
   tick() {
     if(this.frame_count % 10 !== 0) return;
-    console.log('tick');
     let i = 0;
+
     for(const pixel of this.frame) {
       if(this.active_pixel !== i) {
-        pixel.setRGB(0, 0, 0);
+        pixel.setRGB(55, 55, 55);
       } else {
-        pixel.setRGB(0, 0, 255);
+        pixel.random();
       }
 
       i++;
