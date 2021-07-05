@@ -27,8 +27,5 @@ npm start
 ```
 
 ## API
-```
-[GET] /api/lights
-[GET] /api/lights/{lightId}/animation
-[PATCH] /api/lights/{lightId}/animation
-```
+
+https://aurora.ngrok.io/api-docs
