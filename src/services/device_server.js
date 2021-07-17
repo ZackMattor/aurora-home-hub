@@ -40,10 +40,17 @@ export class DeviceServer {
     case 'device_activate':
       this.onDeviceActivate(msg.payload, socket);
       break;
+    case 'device_telemetry':
+      this.onDeviceTelemetry(msg.payload);
+      break;
     default:
       console.log(`topic isn't implemented (${msg.topic})`);
       break;
     }
+  }
+
+  onDeviceTelemetry(telemetry_packet) {
+    this._devices.ingestDeviceActivate(telemetry_packet);
   }
 
   onDeviceActivate(activate_packet, socket) {

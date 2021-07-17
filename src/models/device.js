@@ -62,11 +62,15 @@ export class Device {
 
   ingestDeviceActivate( /* activate_packet */ ) {
     // const { _ } = activate_packet;
-
-    // TODO - move this to ingest telemetry
-    this._last_telemetry = (+new Date);
   }
 
+  ingestDeviceTelemetry(telemetry_packet) {
+    //const { input_state } = telemetry_packet;
+
+    console.log(telemetry_packet);
+
+    this._last_telemetry = (+new Date);
+  }
   get id() {
     return this._id;
   }
