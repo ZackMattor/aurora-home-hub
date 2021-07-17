@@ -23,6 +23,8 @@ export class AppServer {
   listen_http() {
     const port = 8080;
     const app = express();
+
+    app.disable('x-powered-by');
     app.use(cors());
 
     app.listen(port, () => {
