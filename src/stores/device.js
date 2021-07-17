@@ -18,7 +18,7 @@ export class DeviceStore extends AbstractStore {
   }
 
   ingestDeviceTelemetry(telemetry_packet) {
-    let { device_id } = activate_packet;
+    let { device_id } = telemetry_packet;
     let device = this.find(device_id);
 
     if(device) {

@@ -50,7 +50,7 @@ export class DeviceServer {
   }
 
   onDeviceTelemetry(telemetry_packet) {
-    this._devices.ingestDeviceActivate(telemetry_packet);
+    this._devices.ingestDeviceTelemetry(telemetry_packet);
   }
 
   onDeviceActivate(activate_packet, socket) {
