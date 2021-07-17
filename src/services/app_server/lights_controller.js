@@ -45,7 +45,6 @@ export function LightsController(devices) {
     res.json(req.light.serialize());
   });
 
-
   router.get('/lights/:lightId/animation', findResource, (req, res) => {
     res.json(req.light.animation.serialize());
   });
