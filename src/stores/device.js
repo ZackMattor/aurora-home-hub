@@ -2,8 +2,8 @@ import { Device } from '../models/device.js';
 import { AbstractStore } from './abstract_store.js';
 
 export class DeviceStore extends AbstractStore {
-  ingestDeviceTelemetry(telemetry_packet, sendMsg) {
-    let { device_id, geometry } = telemetry_packet;
+  ingestDeviceActivate(activate_packet, sendMsg) {
+    let { device_id, geometry } = activate_packet;
     let device = this._items[device_id];
 
     if(!device) {
@@ -14,6 +14,6 @@ export class DeviceStore extends AbstractStore {
 
     device.sendMsg = sendMsg;
 
-    device.ingestDeviceTelemetry(telemetry_packet);
+    device.ingestDeviceActivate(activate_packet);
   }
 }

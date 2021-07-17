@@ -60,9 +60,10 @@ export class Device {
     this._sendMsg(frame_data);
   }
 
-  ingestDeviceTelemetry( /* device_telemetry */ ) {
-    // const { _ } = device_telemetry;
+  ingestDeviceActivate( /* activate_packet */ ) {
+    // const { _ } = activate_packet;
 
+    // TODO - move this to ingest telemetry
     this._last_telemetry = (+new Date);
   }
 
