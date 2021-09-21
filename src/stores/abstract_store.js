@@ -1,5 +1,9 @@
-export class AbstractStore {
+import EventEmitter from 'events';
+
+export class AbstractStore extends EventEmitter {
   constructor() {
+    super();
+
     this._items = {};
   }
 

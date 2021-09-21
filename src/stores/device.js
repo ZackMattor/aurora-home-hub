@@ -10,11 +10,31 @@ export class DeviceStore extends AbstractStore {
       device = this.add(new Device(device_id, {
         geometry_name: geometry,
       }));
+
+      device.on('stateChange', () => this.emit('stateChange', this.serializeState()));
     }
 
     device.sendMsg = sendMsg;
 
     device.ingestDeviceActivate(activate_packet);
+  }
+
+  serializeState() {
+    let data = {};
+
+    for(const item of Object.values(this._items)) {
+      data[item.id] = item.inputState;
+    }
+
+    return data;
+  }
+
+  setScenes(scenes) {
+    for(const scene of scenes) {
+      for(const deviceId in scene) {
+        this.find(deviceId)?.setAnimation(...scene[deviceId]);
+      }
+    }
   }
 
   ingestDeviceTelemetry(telemetry_packet) {
