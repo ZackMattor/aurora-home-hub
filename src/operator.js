@@ -1,7 +1,7 @@
 import jsonLogic from 'json-logic-js';
 
 export class Operator {
-  constructor(deviceStore) {
+  constructor() {
     this._triggers = [];
   }
 
