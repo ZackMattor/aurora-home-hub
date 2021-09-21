@@ -2,18 +2,49 @@ import { Device } from '../models/device.js';
 import { AbstractStore } from './abstract_store.js';
 
 export class DeviceStore extends AbstractStore {
-  ingestDeviceTelemetry(telemetry_packet, sendMsg) {
-    let { device_id, geometry } = telemetry_packet;
-    let device = this._items[device_id];
+  ingestDeviceActivate(activate_packet, sendMsg) {
+    let { device_id, geometry } = activate_packet;
+    let device = this.find(device_id);
 
     if(!device) {
       device = this.add(new Device(device_id, {
         geometry_name: geometry,
       }));
+
+      device.on('stateChange', () => this.emit('stateChange', this.serializeState()));
     }
 
     device.sendMsg = sendMsg;
 
-    device.ingestDeviceTelemetry(telemetry_packet);
+    device.ingestDeviceActivate(activate_packet);
+  }
+
+  serializeState() {
+    let data = {};
+
+    for(const item of Object.values(this._items)) {
+      data[item.id] = item.inputState;
+    }
+
+    return data;
+  }
+
+  setScenes(scenes) {
+    for(const scene of scenes) {
+      for(const deviceId in scene) {
+        this.find(deviceId)?.setAnimation(...scene[deviceId]);
+      }
+    }
+  }
+
+  ingestDeviceTelemetry(telemetry_packet) {
+    let { device_id } = telemetry_packet;
+    let device = this.find(device_id);
+
+    if(device) {
+      device.ingestDeviceTelemetry(telemetry_packet);
+    } else {
+      console.log(`ERORR - No device found for device telemetry ${device_id}`);
+    }
   }
 }

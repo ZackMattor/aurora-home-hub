@@ -1,8 +1,11 @@
 import { Animations } from '../animations.js';
 import { Geometries } from '../geometries.js';
+import EventEmitter from 'events';
 
-export class Device {
+export class Device extends EventEmitter {
   constructor(device_id, params) {
+    super();
+
     console.log(`Device[${device_id}] -> Created!`);
 
     let {
@@ -13,6 +16,7 @@ export class Device {
     this._sendMsg = () => {};
     this._geometry = Geometries[geometry_name];
     this._animation = null;
+    this._inputState = {};
 
     this._last_telemetry = (+new Date);
     this._connected_at = (+new Date);
@@ -34,6 +38,15 @@ export class Device {
     };
   }
 
+  get inputState() {
+    return this._inputState;
+  }
+
+  set inputState(val) {
+    this._inputState = val;
+    this.emit('stateChange', val);
+  }
+
   set sendMsg(val) {
     this._sendMsg = val;
   }
@@ -46,12 +59,17 @@ export class Device {
     return this._animation;
   }
 
-  setAnimation(name) {
+  setAnimation(name, config={}) {
     if(this.animation) {
       this.animation.stop();
     }
 
     this._animation = new (Animations.find(name))(this);
+
+    for(const key in config) {
+      this._animation.setConfig(key, config[key]);
+    }
+
     this.animation.start();
     console.log('Starting animation', name);
   }
@@ -60,8 +78,16 @@ export class Device {
     this._sendMsg(frame_data);
   }
 
-  ingestDeviceTelemetry( /* device_telemetry */ ) {
-    // const { _ } = device_telemetry;
+  ingestDeviceActivate( /* activate_packet */ ) {
+    // const { _ } = activate_packet;
+  }
+
+  ingestDeviceTelemetry(telemetry_packet) {
+    const { input_state } = telemetry_packet;
+
+    this.inputState = input_state;
+
+    console.log(`Device[${this.id}] -> Telemetry Received!`, telemetry_packet);
 
     this._last_telemetry = (+new Date);
   }

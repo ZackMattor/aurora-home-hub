@@ -58,12 +58,8 @@ export function LightsController(devices) {
 
     config = config || {};
 
-    req.light.setAnimation(id);
     console.log(config);
-
-    for(const key in config) {
-      req.light.animation.setConfig(key, config[key]);
-    }
+    req.light.setAnimation(id, config);
 
     res.json(req.light.animation.serialize());
   });
