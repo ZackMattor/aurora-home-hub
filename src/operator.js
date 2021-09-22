@@ -35,9 +35,9 @@ export class Operator {
 
   enrichScene(deviceState, scene) {
     for(const devId in scene) {
-      let brightness = deviceState["7C:9E:BD:ED:9B:24"].pot / 1024
-      if(!scene[devId][1]) scene[devId][1] = {}
-      scene[devId][1].brightness = brightness
+      let brightness = deviceState['7C:9E:BD:ED:9B:24'].pot / 1024;
+      if(!scene[devId][1]) scene[devId][1] = {};
+      scene[devId][1].brightness = brightness;
     }
 
     return scene;
