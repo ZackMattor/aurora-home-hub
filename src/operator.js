@@ -6,25 +6,40 @@ export class Operator {
   }
 
   addTrigger(logic, positiveScene, negativeScene={}) {
-    this._triggers.push({logic, positiveScene, negativeScene});
+    this._triggers.push({
+      previousState: false,
+      logic,
+      positiveScene,
+      negativeScene
+    });
   }
 
   process(deviceState) {
-    let ret = [];
+    let scenes = [];
 
     for(const trigger of this._triggers) {
-      console.log(deviceState);
       const res = jsonLogic.apply(trigger.logic, deviceState);
+      const hasChanged = res !== trigger.previousState;
 
-      if(res) {
-        ret.push(trigger.positiveScene);
-      } else {
-        ret.push(trigger.negativeScene);
+      if(hasChanged && res) {
+        scenes.push(this.enrichScene(deviceState, trigger.positiveScene));
+      } else if(hasChanged && !res) {
+        scenes.push(this.enrichScene(deviceState, trigger.negativeScene));
       }
+
+      trigger.previousState = res;
     }
 
-    console.log(ret);
+    return scenes;
+  }
 
-    return ret;
+  enrichScene(deviceState, scene) {
+    for(const devId in scene) {
+      let brightness = deviceState["7C:9E:BD:ED:9B:24"].pot / 1024
+      if(!scene[devId][1]) scene[devId][1] = {}
+      scene[devId][1].brightness = brightness
+    }
+
+    return scene;
   }
 }
