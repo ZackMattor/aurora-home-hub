@@ -1,8 +1,18 @@
 import jsonLogic from 'json-logic-js';
+import yaml from 'js-yaml';
 
 export class Operator {
   constructor() {
     this._triggers = [];
+  }
+
+  importYaml(yamlString) {
+    const data = yaml.load(yamlString);
+    console.log(data);
+
+    for(const triggerData of data.triggers) {
+      this.addTrigger(triggerData.logic, triggerData.scene)
+    }
   }
 
   addTrigger(logic, positiveScene, negativeScene={}) {

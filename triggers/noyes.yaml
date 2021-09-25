@@ -1,0 +1,50 @@
+triggers:
+  - logic:
+      var: '7C:9E:BD:ED:9B:24.right'
+    scene:
+      '7C:9E:BD:F4:37:9C':
+        - 'RawColor'
+        - r: 1
+          g: 0
+          b: 0
+      '7C:9E:BD:ED:9B:24':
+        - 'RawColor'
+        - r: 1
+          g: 0
+          b: 0
+      '7C:9E:BD:ED:04:64':
+        - 'RawColor'
+        - r: 1
+
+  - logic:
+      var: '7C:9E:BD:ED:9B:24.left'
+    scene:
+      '7C:9E:BD:F4:37:9C':
+        - 'RawColor'
+        - r: 0
+          g: 1
+          b: 0
+      '7C:9E:BD:ED:9B:24':
+        - 'RawColor'
+        - r: 0.5
+      '7C:9E:BD:ED:04:64':
+        - 'RawColor'
+        - r: 0.5
+
+  - logic:
+      var: '7C:9E:BD:ED:9B:24.center'
+    scene:
+      '7C:9E:BD:F4:37:9C':
+        - 'HueWalker'
+      '7C:9E:BD:ED:9B:24':
+        - 'RawColor'
+        - r: 0
+      '7C:9E:BD:ED:04:64':
+        - 'RawColor'
+        - r: 0
+
+  - logic:
+      var: '7C:9E:BD:ED:04:64.reed'
+    scene:
+      '7C:9E:BD:ED:04:64':
+        - 'HueWalker'
