@@ -9,19 +9,22 @@ export class Device extends EventEmitter {
     console.log(`Device[${device_id}] -> Created!`);
 
     let {
-      geometry_name
+      geometry_name,
+      output_type
     } = params;
 
     this._id = device_id;
     this._sendMsg = () => {};
-    this._geometry = Geometries[geometry_name];
+    this._geometry = Geometries[geometry_name || 'shard'];
     this._animation = null;
     this._inputState = {};
 
     this._last_telemetry = (+new Date);
     this._connected_at = (+new Date);
 
-    if(this.geometry) {
+    if(output_type == 1) {
+      this.setAnimation('HueWalker');
+    } else if(this.geometry) {
       this.setAnimation('HueWalker');
     } else {
       console.error(`Device[${this.id}] -> Invalid geometry (${geometry_name})`);
