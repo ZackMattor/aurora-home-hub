@@ -4,6 +4,7 @@
 // is the server that listens for connections from devices and then
 // is the layer that communicates with them.
 import net from 'net';
+import ws from 'ws';
 
 export class DeviceServer {
   constructor(device_store) {
@@ -11,8 +12,21 @@ export class DeviceServer {
   }
 
   listen() {
+    let ws_server = new ws.Server({port: 1339});
+
+    ws_server.on('connection', (socket) => {
+      console.log('Client Connected via WebSocket!', socket.remoteAddress);
+      socket.on('error', console.error);
+
+      // Handle incoming messages from aurora clients
+      socket.on('message', (data) => {
+        this.onMessage(data, socket);
+      });
+
+    });
+
     let server = net.createServer((socket) => {
-      console.log('Client Connected!', socket.remoteAddress);
+      console.log('Client Connected via TCP!', socket.remoteAddress);
 
       socket.on('error', console.error);
 
@@ -27,7 +41,7 @@ export class DeviceServer {
   }
 
   onMessage(msg, socket) {
-    console.log(`DeviceConnService -> message received! (${msg})`);
+    // console.log(`DeviceConnService -> message received! (${msg})`);
 
     try {
       msg = JSON.parse(msg);
@@ -58,6 +72,7 @@ export class DeviceServer {
   }
 
   sendMessage(socket, packet) {
-    socket.write(packet);
+    if(socket.write) socket.write(packet);
+    if(socket.send)  socket.send(packet);
   }
 }

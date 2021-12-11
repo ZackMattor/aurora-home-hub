@@ -11,7 +11,7 @@ export class Operator {
     console.log(data);
 
     for(const triggerData of data.triggers) {
-      this.addTrigger(triggerData.logic, triggerData.scene)
+      this.addTrigger(triggerData.logic, triggerData.scene);
     }
   }
 
@@ -25,16 +25,20 @@ export class Operator {
   }
 
   process(deviceState) {
+    // console.log(deviceState)
     let scenes = [];
 
     for(const trigger of this._triggers) {
       const res = jsonLogic.apply(trigger.logic, deviceState);
       const hasChanged = res !== trigger.previousState;
 
-      if(hasChanged && res) {
-        scenes.push(this.enrichScene(deviceState, trigger.positiveScene));
-      } else if(hasChanged && !res) {
-        scenes.push(this.enrichScene(deviceState, trigger.negativeScene));
+      // If the scenes have changed, push them to our scenes object
+      if(hasChanged) {
+        if(res) {
+          scenes.push(this.enrichScene(deviceState, trigger.positiveScene));
+        } else {
+          scenes.push(this.enrichScene(deviceState, trigger.negativeScene));
+        }
       }
 
       trigger.previousState = res;
@@ -47,7 +51,11 @@ export class Operator {
     for(const devId in scene) {
       if(deviceState['7C:9E:BD:ED:9B:24']?.pot) {
         let brightness = deviceState['7C:9E:BD:ED:9B:24'].pot / 1024;
+
+        // Set our scene config to empty array if it isn't initialized
         if(!scene[devId][1]) scene[devId][1] = {};
+
+        // Tweak the config value based off the input value
         scene[devId][1].brightness = brightness;
       }
     }

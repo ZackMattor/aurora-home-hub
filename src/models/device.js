@@ -22,7 +22,7 @@ export class Device extends EventEmitter {
     this._last_telemetry = (+new Date);
     this._connected_at = (+new Date);
 
-    if(output_type == 1) {
+    if(output_type === 1) {
       this.setAnimation('HueWalker');
     } else if(this.geometry) {
       this.setAnimation('HueWalker');
@@ -89,8 +89,6 @@ export class Device extends EventEmitter {
     const { input_state } = telemetry_packet;
 
     this.inputState = input_state;
-
-    console.log(`Device[${this.id}] -> Telemetry Received!`, telemetry_packet);
 
     this._last_telemetry = (+new Date);
   }
