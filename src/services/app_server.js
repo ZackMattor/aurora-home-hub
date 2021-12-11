@@ -2,7 +2,8 @@ import WebSocket from 'ws';
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import YAML from 'yamljs';
+import yaml from 'js-yaml';
+import fs from 'fs';
 
 import { LightsController } from './app_server/lights_controller.js';
 import { AnimationsController } from './app_server/animations_controller.js';
@@ -12,7 +13,7 @@ import { AnimationsController } from './app_server/animations_controller.js';
 export class AppServer {
   constructor(device_store) {
     this.devices = device_store;
-    this.swaggerDocument = YAML.load('./src/services/app_server/swagger.yaml');
+    this.swaggerDocument = yaml.load(fs.readFileSync('./src/services/app_server/swagger.yaml', 'utf8'));
   }
 
   listen() {

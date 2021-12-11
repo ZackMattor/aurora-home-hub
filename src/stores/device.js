@@ -3,12 +3,13 @@ import { AbstractStore } from './abstract_store.js';
 
 export class DeviceStore extends AbstractStore {
   ingestDeviceActivate(activate_packet, sendMsg) {
-    let { device_id, geometry } = activate_packet;
+    let { device_id, geometry, output_type } = activate_packet;
     let device = this.find(device_id);
 
     if(!device) {
       device = this.add(new Device(device_id, {
         geometry_name: geometry,
+        output_type
       }));
 
       device.on('stateChange', () => this.emit('stateChange', this.serializeState()));

@@ -29,3 +29,38 @@ npm start
 ## API
 
 https://aurora.ngrok.io/api-docs
+
+## Device Interface...
+
+### Activate
+
+Gets sent when a device first going to connect to the home hub
+
+```
+{
+  topic: 'device_activate',
+  payload: {
+    device_id: '7C:9E:BD:ED:9B:24',
+    output_type: '1',
+    geometry: ''
+  }
+}
+```
+
+### Telemetry
+
+Sends us the current state of various inputs on the device. This should not send data that hasn't changed since the previous telemetry.
+
+```
+{
+  topic: 'device_telemetry',
+  payload: {
+    device_id: '7C:9E:BD:ED:04:64',
+    input_state: {
+      reed_switch: 0,
+      144_59: 103,
+      144_60: 210,
+    }
+  }
+}
+```
