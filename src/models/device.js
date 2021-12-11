@@ -46,7 +46,7 @@ export class Device extends EventEmitter {
   }
 
   set inputState(val) {
-    this._inputState = val;
+    this._inputState = Object.assign(this._inputState, val);
     this.emit('stateChange', val);
   }
 

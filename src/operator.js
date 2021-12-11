@@ -24,8 +24,8 @@ export class Operator {
     });
   }
 
-  process(deviceState) {
-    // console.log(deviceState)
+  processScenes(deviceState) {
+    console.log(deviceState)
     let scenes = [];
 
     for(const trigger of this._triggers) {
@@ -33,12 +33,8 @@ export class Operator {
       const hasChanged = res !== trigger.previousState;
 
       // If the scenes have changed, push them to our scenes object
-      if(hasChanged) {
-        if(res) {
-          scenes.push(this.enrichScene(deviceState, trigger.positiveScene));
-        } else {
-          scenes.push(this.enrichScene(deviceState, trigger.negativeScene));
-        }
+      if (hasChanged) {
+        scenes.push(res ? trigger.positiveScene : trigger.negativeScene);
       }
 
       trigger.previousState = res;
@@ -47,19 +43,23 @@ export class Operator {
     return scenes;
   }
 
-  enrichScene(deviceState, scene) {
-    for(const devId in scene) {
-      if(deviceState['7C:9E:BD:ED:9B:24']?.pot) {
-        let brightness = deviceState['7C:9E:BD:ED:9B:24'].pot / 1024;
+  // enrichScene(deviceState, scene) {
+  //   const pot_val = deviceState['webbro'] && deviceState['webbro']['176_21'];
 
-        // Set our scene config to empty array if it isn't initialized
-        if(!scene[devId][1]) scene[devId][1] = {};
+  //   if(pot_val) {
+  //     for(const devId in scene) {
+  //       console.log(devId)
+  //       let brightness = pot_val / 127;
 
-        // Tweak the config value based off the input value
-        scene[devId][1].brightness = brightness;
-      }
-    }
+  //       // Set our scene config to empty array if it isn't initialized
+  //       if(!scene[devId][1]) scene[devId][1] = {};
 
-    return scene;
-  }
+  //       // Tweak the config value based off the input value
+  //       scene[devId][1].brightness = brightness;
+  //       console.log("set brightness", brightness)
+  //     }
+  //   }
+
+  //   return scene;
+  // }
 }

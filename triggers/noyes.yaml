@@ -54,7 +54,7 @@ triggers:
     scene:
       '7C:9E:BD:ED:9B:24':
         - 'RawColor'
-        - r: 255
+        - r: 1
 
   - logic:
       var: '7C:9E:BD:ED:9B:24.right'
