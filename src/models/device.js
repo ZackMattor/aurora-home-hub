@@ -2,6 +2,12 @@ import { Animations } from '../animations.js';
 import { Geometries } from '../geometries.js';
 import EventEmitter from 'events';
 
+function findDeviceDataValue(inputPath, data) {
+  let [devId, inputName] = inputPath.split('.');
+
+  return data[devId] && data[devId][inputName] && parseInt(data[devId][inputName]);
+}
+
 export class Device extends EventEmitter {
   constructor(device_id, params) {
     super();
@@ -18,6 +24,14 @@ export class Device extends EventEmitter {
     this._geometry = Geometries[geometry_name || 'shard'];
     this._animation = null;
     this._inputState = {};
+
+    // {
+    //   input - The path to find the input data that we bind to. Ex. fe:fe:fe:fe:fe.pot
+    //   map_val - the range of the value so we can normalize it 0-1
+    //   config_key - The config key that this input is bound to
+    //   default - The default value if the input doesn't exist in the state
+    // }
+    this._dataBindings = [];
 
     this._last_telemetry = (+new Date);
     this._connected_at = (+new Date);
@@ -62,15 +76,54 @@ export class Device extends EventEmitter {
     return this._animation;
   }
 
-  setAnimation(name, config={}) {
+  processDataBindings(data) {
+    console.log('processing data bindings... ', data);
+
+    for(const binding of this._dataBindings) {
+      const foundData = findDeviceDataValue(binding.input, data);
+
+      if(foundData !== undefined) {
+        console.log(foundData, binding.map_val)
+        const processedData = foundData / binding.map_val;
+        console.log('found data to bind', processedData);
+        this._animation.setConfig(binding.config_key, processedData);
+      } else {
+        this._animation.setConfig(binding.config_key, binding.default);
+      }
+    }
+  }
+
+  setAnimation(name, config={}, devicesState=null) {
     if(this.animation) {
       this.animation.stop();
     }
 
     this._animation = new (Animations.find(name))(this);
 
+    this._dataBindings = []
+
     for(const key in config) {
-      this._animation.setConfig(key, config[key]);
+      console.log(config[key])
+
+      // Determine if a config value for our scene is a data-bound value to another input
+      if(typeof config[key] === 'string' && config[key].indexOf('bind(') !== -1) {
+        let matches = config[key].match(/bind\((?<input>.+),(?<map_val>.+),(?<default>.+)\)/)
+
+        // Register our data binding
+        this._dataBindings.push({
+          input: matches.groups.input,
+          map_val: parseInt(matches.groups.map_val),
+          default: parseInt(matches.groups.default),
+          config_key: key
+        })
+      } else {
+        this._animation.setConfig(key, config[key]);
+      }
+    }
+
+    if(devicesState) {
+      console.log("TRYING TO SET DATA BINDINGS");
+      this.processDataBindings(devicesState);
     }
 
     this.animation.start();

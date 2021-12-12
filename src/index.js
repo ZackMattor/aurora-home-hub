@@ -18,6 +18,7 @@ op.importYaml(fs.readFileSync('triggers/noyes.yaml'), 'utf8');
 deviceStore.on('stateChange', deviceState => {
   const scenes = op.processScenes(deviceState);
 
-  deviceStore.setScenes(scenes);
+  deviceStore.processDataBindings(deviceState);
+  deviceStore.setScenes(scenes, deviceState);
 });
 

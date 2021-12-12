@@ -30,11 +30,17 @@ export class DeviceStore extends AbstractStore {
     return data;
   }
 
-  setScenes(scenes) {
+  setScenes(scenes, deviceState) {
     for(const scene of scenes) {
       for(const deviceId in scene) {
-        this.find(deviceId)?.setAnimation(...scene[deviceId]);
+        this.find(deviceId)?.setAnimation(...scene[deviceId], deviceState);
       }
+    }
+  }
+
+  processDataBindings(deviceState) {
+    for(const deviceId in deviceState) {
+      this.find(deviceId)?.processDataBindings(deviceState);
     }
   }
 

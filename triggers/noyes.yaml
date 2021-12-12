@@ -50,14 +50,22 @@ triggers:
         - r: 1
 
   - logic:
-      var: '7C:9E:BD:ED:9B:24.center'
+      var: 'webbro.153_40'
     scene:
       '7C:9E:BD:ED:9B:24':
         - 'RawColor'
         - r: 1
+          brightness: "bind(webbro.176_21,127,1)"
 
   - logic:
-      var: '7C:9E:BD:ED:9B:24.right'
+      var: 'webbro.153_41'
+    scene:
+      '7C:9E:BD:ED:9B:24':
+        - 'HueWalker'
+        - hue_velocity: "bind(webbro.176_22,512,1)"
+
+  - logic:
+      var: 'webbro.153_36'
     scene:
       '7C:9E:BD:ED:9B:24':
         - 'RawColor'
