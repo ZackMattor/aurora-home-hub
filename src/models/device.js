@@ -82,8 +82,8 @@ export class Device extends EventEmitter {
     for(const binding of this._dataBindings) {
       const foundData = findDeviceDataValue(binding.input, data);
 
-      if(foundData !== undefined) {
-        console.log(foundData, binding.map_val)
+      if(typeof foundData !== 'undefined') {
+        console.log(foundData, binding.map_val);
         const processedData = foundData / binding.map_val;
         console.log('found data to bind', processedData);
         this._animation.setConfig(binding.config_key, processedData);
@@ -100,14 +100,14 @@ export class Device extends EventEmitter {
 
     this._animation = new (Animations.find(name))(this);
 
-    this._dataBindings = []
+    this._dataBindings = [];
 
     for(const key in config) {
-      console.log(config[key])
+      console.log(config[key]);
 
       // Determine if a config value for our scene is a data-bound value to another input
       if(typeof config[key] === 'string' && config[key].indexOf('bind(') !== -1) {
-        let matches = config[key].match(/bind\((?<input>.+),(?<map_val>.+),(?<default>.+)\)/)
+        let matches = config[key].match(/bind\((?<input>.+),(?<map_val>.+),(?<default>.+)\)/);
 
         // Register our data binding
         this._dataBindings.push({
@@ -115,14 +115,14 @@ export class Device extends EventEmitter {
           map_val: parseInt(matches.groups.map_val),
           default: parseInt(matches.groups.default),
           config_key: key
-        })
+        });
       } else {
         this._animation.setConfig(key, config[key]);
       }
     }
 
     if(devicesState) {
-      console.log("TRYING TO SET DATA BINDINGS");
+      console.log('TRYING TO SET DATA BINDINGS');
       this.processDataBindings(devicesState);
     }
 

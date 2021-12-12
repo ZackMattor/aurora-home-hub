@@ -25,7 +25,7 @@ export class Operator {
   }
 
   processScenes(deviceState) {
-    console.log(deviceState)
+    console.log(deviceState);
     let scenes = [];
 
     for(const trigger of this._triggers) {
@@ -33,7 +33,7 @@ export class Operator {
       const hasChanged = res !== trigger.previousState;
 
       // If the scenes have changed, push them to our scenes object
-      if (hasChanged) {
+      if(hasChanged) {
         scenes.push(res ? trigger.positiveScene : trigger.negativeScene);
       }
 
