@@ -106,6 +106,12 @@ export class Pixel {
     return this;
   }
 
+  mult(val) {
+    this._r *= val;
+    this._g *= val;
+    this._b *= val;
+  }
+
   get hsl() {
     return rgbToHsl(this._r, this._g, this._b);
   }

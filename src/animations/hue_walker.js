@@ -1,4 +1,3 @@
-// This animation is for a sphereoid
 import { AnimationBase } from './base.js';
 
 export class HueWalker extends AnimationBase {

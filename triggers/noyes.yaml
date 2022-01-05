@@ -1,48 +1,7 @@
+# 7C:9E:BD:EE:20:40 - shard
+# 7C:9E:BD:F4:37:9C - paper icosahedron
+
 triggers:
-  #- logic:
-  #    var: '7C:9E:BD:ED:9B:24.right'
-  #  scene:
-  #    '7C:9E:BD:F4:37:9C':
-  #      - 'RawColor'
-  #      - r: 1
-  #        g: 0
-  #        b: 0
-  #    '7C:9E:BD:ED:9B:24':
-  #      - 'RawColor'
-  #      - r: 1
-  #        g: 0
-  #        b: 0
-  #    '7C:9E:BD:ED:04:64':
-  #      - 'RawColor'
-  #      - r: 1
-
-  #- logic:
-  #    var: '7C:9E:BD:ED:9B:24.left'
-  #  scene:
-  #    '7C:9E:BD:F4:37:9C':
-  #      - 'RawColor'
-  #      - r: 0
-  #        g: 1
-  #        b: 0
-  #    '7C:9E:BD:ED:9B:24':
-  #      - 'RawColor'
-  #      - r: 0.5
-  #    '7C:9E:BD:ED:04:64':
-  #      - 'RawColor'
-  #      - r: 0.5
-
-  #- logic:
-  #    var: '7C:9E:BD:ED:9B:24.center'
-  #  scene:
-  #    '7C:9E:BD:F4:37:9C':
-  #      - 'HueWalker'
-  #    '7C:9E:BD:ED:9B:24':
-  #      - 'RawColor'
-  #      - r: 0
-  #    '7C:9E:BD:ED:04:64':
-  #      - 'RawColor'
-  #      - r: 0
-
   - logic: '1'
     scene:
       '7C:9E:BD:ED:04:64':
@@ -56,6 +15,18 @@ triggers:
         - 'RawColor'
         - r: 1
           brightness: "bind(webbro.176_21,127,1)"
+      '7C:9E:BD:EE:20:40':
+        - 'RawColor'
+        - brightness: "bind(webbro.176_21,127,1)"
+          r: "bind(webbro.176_26,127,1)"
+          g: "bind(webbro.176_27,127,1)"
+          b: "bind(webbro.176_28,127,1)"
+      '7C:9E:BD:F4:37:9C':
+        - 'RawColor'
+        - brightness: "bind(webbro.176_21,127,1)"
+          r: "bind(webbro.176_26,127,1)"
+          g: "bind(webbro.176_27,127,1)"
+          b: "bind(webbro.176_28,127,1)"
 
   - logic:
       var: 'webbro.153_41'
@@ -63,10 +34,67 @@ triggers:
       '7C:9E:BD:ED:9B:24':
         - 'HueWalker'
         - hue_velocity: "bind(webbro.176_22,512,1)"
+          brightness: "bind(webbro.176_21,127,1)"
+      '7C:9E:BD:EE:20:40':
+        - 'HueWalker'
+        - hue_velocity: "bind(webbro.176_22,512,1)"
+          brightness: "bind(webbro.176_21,127,1)"
+      '7C:9E:BD:F4:37:9C':
+        - 'HueWalker'
+        - hue_velocity: "bind(webbro.176_22,512,1)"
+          brightness: "bind(webbro.176_21,127,1)"
 
   - logic:
       var: 'webbro.153_36'
     scene:
       '7C:9E:BD:ED:9B:24':
         - 'RawColor'
-        - r: 0
+        - brightness: 0
+      '7C:9E:BD:EE:20:40':
+        - 'RawColor'
+        - brightness: 0
+      '7C:9E:BD:F4:37:9C':
+        - 'RawColor'
+        - brightness: 0
+
+  - logic:
+      var: 'webbro.153_42'
+    scene:
+      '7C:9E:BD:EE:20:40':
+        - 'ColorBurst'
+        - brightness: "bind(webbro.176_21,127,1)"
+          burst_threshold: "bind(webbro.176_22,127,1)"
+          decay: "bind(webbro.176_23,127,1)"
+          0: "bind(webbro.144_48,127,1)"
+          1: "bind(webbro.144_50,127,1)"
+          2: "bind(webbro.144_52,127,1)"
+          3: "bind(webbro.144_53,127,1)"
+          4: "bind(webbro.144_55,127,1)"
+          5: "bind(webbro.144_57,127,1)"
+          6: "bind(webbro.144_59,127,1)"
+
+      '7C:9E:BD:F4:37:9C':
+        - 'ColorBurst'
+        - brightness: "bind(webbro.176_21,127,1)"
+          burst_threshold: "bind(webbro.176_22,127,1)"
+          decay: "bind(webbro.176_23,127,1)"
+          0: "bind(webbro.144_48,127,1)"
+          1: "bind(webbro.144_49,127,1)"
+          2: "bind(webbro.144_50,127,1)"
+          3: "bind(webbro.144_51,127,1)"
+          4: "bind(webbro.144_52,127,1)"
+          5: "bind(webbro.144_53,127,1)"
+          6: "bind(webbro.144_54,127,1)"
+          7: "bind(webbro.144_55,127,1)"
+          8: "bind(webbro.144_56,127,1)"
+          9: "bind(webbro.144_57,127,1)"
+          10: "bind(webbro.144_58,127,1)"
+          11: "bind(webbro.144_59,127,1)"
+          12: "bind(webbro.144_61,127,1)"
+          13: "bind(webbro.144_62,127,1)"
+          14: "bind(webbro.144_63,127,1)"
+          15: "bind(webbro.144_64,127,1)"
+          16: "bind(webbro.144_65,127,1)"
+          17: "bind(webbro.144_66,127,1)"
+          18: "bind(webbro.144_67,127,1)"
+

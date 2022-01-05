@@ -46,12 +46,13 @@ export class DeviceServer {
     try {
       msg = JSON.parse(msg);
     } catch (e) {
-      console.error('Failed to parse payload...');
+      console.error('Failed to parse payload...', msg);
       return;
     }
 
     switch(msg.topic) {
     case 'device_activate':
+      console.log(msg.payload);
       this.onDeviceActivate(msg.payload, socket);
       break;
     case 'device_telemetry':
