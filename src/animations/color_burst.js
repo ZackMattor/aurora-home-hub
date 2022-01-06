@@ -61,7 +61,6 @@ export class ColorBurst extends AnimationBase {
     if(this.config.manual_control) {
       for(let i=0; i<this.frame.length; i++) {
         if(this.config[i]) {
-          console.log('set burst', i, this.config[i]);
           this.setBurst(i, this.config[i]);
         }
       }
