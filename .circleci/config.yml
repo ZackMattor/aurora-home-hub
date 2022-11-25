@@ -31,7 +31,7 @@ jobs:
       - deploy:
           name: deplopy image on master
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
               PACKAGE_NAME=aurora-server
               docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
               docker build -t zackmattor/$PACKAGE_NAME:latest .
