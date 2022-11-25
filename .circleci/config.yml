@@ -33,7 +33,8 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
               PACKAGE_NAME=aurora-server
-              docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+              echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
+
               docker build -t zackmattor/$PACKAGE_NAME:latest .
               docker tag zackmattor/$PACKAGE_NAME:latest zackmattor/$PACKAGE_NAME:$CIRCLE_SHA1
               docker push zackmattor/$PACKAGE_NAME:$CIRCLE_SHA1
