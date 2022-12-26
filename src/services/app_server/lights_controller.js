@@ -37,7 +37,7 @@ export function LightsController(devices) {
 
   router.use(bodyParser.json());
 
-  router.get('/lights', (req, res) => {
+  router.get('/lights', (_req, res) => {
     res.json(devices.serialize());
   });
 
