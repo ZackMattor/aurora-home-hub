@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-  headless_chrome:
+  aurora_server:
     image: zackmattor/aurora-server
     networks:
       - auroranet
@@ -12,7 +12,7 @@ services:
     ports:
       - '8086:8086'
     volumes:
-      - influxdb-storage:/var/lib/influxdb
+      - influxdb-storage:/var/lib/influxdb2
     environment:
       - INFLUXDB_DB=db0
       - INFLUXDB_ADMIN_USER=admin
