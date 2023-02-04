@@ -4,7 +4,7 @@
 // is the server that listens for connections from devices and then
 // is the layer that communicates with them.
 import net from 'net';
-import ws from 'ws';
+import { WebSocketServer } from 'ws';
 
 export class DeviceServer {
   constructor(device_store) {
@@ -12,7 +12,7 @@ export class DeviceServer {
   }
 
   listen() {
-    let ws_server = new ws.Server({port: 1339});
+    let ws_server = new WebSocketServer({port: 1339});
 
     ws_server.on('connection', (socket) => {
       console.log('Client Connected via WebSocket!', socket.remoteAddress);
