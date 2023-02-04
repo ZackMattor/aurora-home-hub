@@ -19,8 +19,7 @@ https://imgur.com/gallery/hAcF4hQ
 ## Getting Started
 
 ``` bash
-# Install node V15.X.X (recommend NVM to manage node versions)
-nvm install 15
+nvm install 19
 
 npm install
 npm start
