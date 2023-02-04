@@ -1,4 +1,4 @@
-import WebSocket from 'ws';
+import { WebSocketServer } from 'ws';
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
@@ -37,7 +37,7 @@ export class AppServer {
   }
 
   listen_stream() {
-    const wss = new WebSocket.Server({ port: 1338 });
+    const wss = new WebSocketServer({ port: 1338 });
 
     wss.on('connection', (ws) => {
       console.log('We got an app connection!');
